@@ -1,0 +1,378 @@
+/* --- Estilos para el contenedor principal de contenido (del base.html) --- */
+.main-content {
+    display: flex; /* Habilitar Flexbox */
+    justify-content: center; /* Centrar horizontalmente los elementos hijos (registercontainer) */
+    align-items: center; /* Centrar verticalmente los elementos hijos */
+    min-height: calc(100vh - 300px - 200px); /* Ajusta la altura mínima para ocupar el espacio disponible */
+    /* Explicación de min-height:
+       100vh: Altura completa de la ventana del navegador
+       300px: Altura aproximada de tu .container1 (el banner)
+       200px: Altura aproximada de tu footer
+       Esto asegura que el main-content ocupe el espacio restante y permita el centrado vertical.
+       Ajusta estos valores (300px y 200px) si la altura de tu banner/footer cambia.
+    */
+    padding: 20px; /* Añade un poco de padding para que no se pegue a los bordes */
+}
+
+
+/* --- Acomodo general del contenedor de productos debajo del carrusel --- */
+.contenido {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto 40px auto; /* Centrado y margen inferior */
+    padding: 20px;
+    text-align: center;
+}
+
+.contenido h3 {
+    margin-bottom: 30px;
+    color: #a3083c;
+}
+
+
+
+
+/* --- Estilos para el banner (container1) --- */
+
+.container1{ 
+background-image: url('/static/core/img/pag-1.png');
+background-size: cover; /* Ajusta la imagen para que cubra todo el contenedor */
+background-position: center; /* Centra la imagen de fondo */
+background-repeat: no-repeat; /* Evita que la imagen se repita */
+height: 300px; /* Dale una altura fija para que el banner sea visible */
+display: flex; /* Para centrar el contenido (h2,  botones) dentro del banner */
+flex-direction: column; /* Apila el contenido verticalmente */
+justify-content: center; /* Centra verticalmente el contenido */
+align-items: center; /* Centra horizontalmente el contenido */
+color: white; /* Asegura que el texto sea blanco sobre el banner oscuro si lo es */
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para que el texto resalte */
+padding: 20px; /* Espaciado interno */
+}
+
+
+.container1 .tituloland,
+.container1 .subtitulo {
+    color: white; /* Asegúrate de que el texto dentro del banner sea blanco */
+    margin-bottom: 10px; /* Espaciado entre título y subtítulo */
+}
+
+/* Ajusta los botones para que se vean bien sobre el banner */
+.container1 .btn {
+    margin: 10px 5px;
+    
+}
+
+.banner-buttons {
+    position: absolute;
+    bottom: 0px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.container1 {
+    position: relative; /* Necesario para que los botones se posicionen dentro */
+}
+
+/* Estilos para el carrusel */
+#carouselExampleControls, #carouselExampleIndicators { /* Usa el ID de tu carrusel */
+    margin-top: 20px; /* Un poco de margen superior, si lo necesitas */
+    margin-bottom: 20px; /* Un poco de margen inferior */
+    width: 80%; /* Ancho del carrusel, por ejemplo 80% del contenedor padre */
+    max-width: 1000px; /* Un ancho máximo para pantallas grandes */
+    margin-left: auto; /* Centrar horizontalmente */
+    margin-right: auto; /* Centrar horizontalmente */
+    overflow: hidden; /* Asegura que el contenido no se salga */
+    border-radius: 8px; /* Bordes ligeramente redondeados, opcional */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Una sombra sutil, opcional */
+}
+
+.carousel-item img {
+    height: 400px; /* Altura fija para todas las imágenes del carrusel */
+    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+    /* Si las imágenes se ven estiradas o cortadas, prueba: */
+    /* object-fit: contain; (la imagen se ajusta manteniendo la relación de aspecto) */
+    /* object-fit: fill; (la imagen se estira para llenar) */
+}
+
+/* Opcional: Para asegurar que el contenido principal no se superponga con el carrusel */
+.main-content {
+    /* ... Tus estilos existentes de flexbox para centrar ... */
+    padding-top: 20px; /* Añade un poco de padding si el carrusel está justo antes del contenido */
+    padding-bottom: 20px; /* Si hay más contenido después del carrusel */
+}
+
+
+/* --- Estilos lista productos --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px; 
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px; /* Ajusta la altura si lo necesitas */
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-info h4 a{
+    color: #a3083c;
+    text-decoration: none;
+
+}
+
+
+
+
+
+
+
+
+
+ /* CSS para la pagina de register */
+        .registercontainer {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 400px;
+            max-width: 90%; /* Asegura que no se desborde en pantallas pequeñas */
+            text-align: center;
+             margin: auto; 
+           
+        }
+        
+        .registercontainer h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 1.8em;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+        }
+        .form-group ul.errorlist {
+            color: red;
+            list-style-type: none;
+            padding: 0;
+            margin-top: 5px;
+            font-size: 0.85em;
+        }
+        .form-group .helptext {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 5px;
+            display: block;
+        }
+        .registercontainer button {
+            width: 100%;
+            padding: 12px;
+            background-color: #a3083c !important;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .registercontainer button:hover {
+            background-color: #a3083c;
+        }
+        .login-link {
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        .login-link a {
+            color: #a3083c;
+            text-decoration: none;
+        }
+        
+        .principal-link  a{
+            color: #a3083c;
+            text-decoration: none;
+        }
+
+
+/* CSS para la pagina de login */
+        .login-container{
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        width: 400px;
+        max-width: 90%; 
+        text-align: center;
+        margin: auto;     
+
+        }
+
+
+        .register-link a{
+            color: #a3083c;
+            text-decoration: none;
+
+        }
+
+
+
+
+
+
+/* estilos para mi footer*/
+
+/* --- FOOTER --- */
+/* Contenedor principal del footer, aquí aplicamos el color de fondo y el borde */
+.main-footer {
+    background-image: url('/static/core/img/logosinfondo.png');
+    background-color: #a3083c;
+    border-top: 2px solid #a3083c; /* Borde superior del mismo color, para consistencia */
+    border-bottom: 2px solid #a3083c; /* Borde inferior también */
+    padding: 40px 20px; /* Espaciado interno */
+    font-size: 0.95em; /* Tamaño de fuente base */
+    color: white;
+    position: relative;
+    background-size: cover;       /* O "contain" o un valor específico como "100% auto" */
+    background-repeat: no-repeat; /* Evita que se repita */
+    background-position: left;  /* Centra la imagen */ /* Color de texto por defecto para todo el footer */
+}
+/* ajustar transparencia de img fondo footer*/
+.main-footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1); /* Negro con 10% de opacidad */
+    z-index: 0;
+}
+
+.main-footer > * {
+    position: relative;
+    z-index: 1; /* Asegura que el contenido esté por encima de la capa oscura */
+}
+
+/* Fin ajustar transparencia de img fondo footer*/
+
+/* Contenedor de las columnas de contenido del footer */
+.footer-content {
+    display: flex; /* Habilita Flexbox para las columnas */
+    flex-wrap: wrap; /* Permite que las columnas salten de línea en pantallas pequeñas */
+    justify-content: space-around; /* Distribuye el espacio entre las columnas */
+    max-width: 1200px; /* Ancho máximo del contenido del footer */
+    margin: 0 auto; /* Centra el contenido del footer horizontalmente */
+    gap: 30px; /* Espacio entre las columnas */
+    text-align: left; /* Alineación de texto predeterminada para el contenido de las columnas */
+}
+
+/* Estilos para los títulos de cada sección del footer (Acerca de, Contacto, Síguenos) */
+.main-footer h3 {
+    color: white; /* Color del título en blanco para contraste */
+    margin-bottom: 15px; /* Espacio debajo del título */
+    font-size: 1.2em; /* Tamaño de fuente del título */
+    text-align: center; /* Centra los títulos dentro de sus columnas */
+}
+
+/* Estilos para los párrafos de descripción y contacto */
+.footer-description p,
+.footer-contact p {
+    color: #f0f0f0; /* Un blanco ligeramente más suave para los párrafos */
+    margin-bottom: 8px; /* Espacio entre párrafos */
+    line-height: 1.6; /* Altura de línea para mejor legibilidad */
+    text-align: center; /* Centra el texto de los párrafos */
+}
+
+/* Estilos específicos para el enlace de teléfono */
+.footer-contact .phone-link {
+    color: white; /* Color del enlace en blanco */
+    text-decoration: underline; /* Subrayado para indicar que es un enlace */
+    transition: color 0.3s ease; /* Transición suave para el hover */
+}
+.footer-contact .phone-link:hover {
+    color: #ffe066; /* Un amarillo suave al pasar el ratón para destacar */
+}
+
+/* Estilos para el contenedor de iconos sociales */
+.social-icons {
+    display: flex; /* Habilita Flexbox para los iconos */
+    justify-content: center; /* Centra los iconos horizontalmente */
+    margin-top: 15px; /* Espacio superior si es necesario */
+}
+
+/* Estilos para cada icono social (los enlaces 'a' dentro de .social-icons) */
+.social-icons a {
+    color: white; /* Color de los iconos en blanco */
+    font-size: 24px; /* Tamaño de los iconos */
+    margin: 0 10px; /* Espacio a los lados de cada icono */
+    transition: color 0.3s ease; /* Transición suave para el hover */
+}
+
+.social-icons a:hover {
+    color: #ffe066; /* El mismo amarillo suave al pasar el ratón por los iconos */
+}
+
+/* Estilos para la sección de copyright en la parte inferior del footer */
+.footer-bottom {
+    text-align: center; /* Centra el texto de copyright */
+    margin-top: 30px; /* Espacio superior para separarlo del contenido de arriba */
+    padding-top: 20px; /* Espaciado interno superior */
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Línea divisoria sutil blanca transparente */
+    font-size: 0.85em; /* Tamaño de fuente más pequeño */
+    color: #f0f0f0; /* Texto en un blanco suave */
+}
+
+/* --- MEDIA QUERIES (PARA RESPONSIVIDAD) --- */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column; /* Apila las columnas del footer verticalmente */
+        align-items: center; /* Centra los elementos */
+        text-align: center; /* Centra el texto dentro de cada columna */
+    }
+    .footer-description,
+    .footer-contact,
+    .footer-social {
+        width: 90%; /* Ocupa casi todo el ancho disponible */
+        margin-bottom: 25px; /* Más espacio entre secciones apiladas */
+    }
+    .main-footer h3 {
+        text-align: center; /* Asegura que los títulos estén centrados en móvil */
+    }
+    .footer-description p,
+    .footer-contact p {
+        text-align: center; /* Asegura que los párrafos estén centrados en móvil */
+    }
+}
+
+  

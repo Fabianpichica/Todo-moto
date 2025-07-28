@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %} 
+{% load static %} {# Es buena práctica mantenerlo si potencialmente podrías usar {% static %} aquí, aunque base.html ya lo carga. #}
+
+{% block title %}Registrarse en Moto-GM{% endblock title %} {# Título específico para la página de registro #}
+
+{% block content %}
+    {# Todo el contenido que estaba dentro del <body> de tu register.html original, ahora va aquí. #}
+    <div class="registercontainer"> 
+        <h2>Crear Cuenta en Moto-GM</h2> 
+        <form method="post"> 
+            {% csrf_token %} 
+
+            {% for field in form %} 
+                <div class="form-group"> 
+                    {{ field.label_tag }} 
+                    {{ field }} 
+                    {% if field.help_text %} 
+                        <small class="form-text text-muted helptext">{{ field.help_text }}</small> 
+                    {% endif %} 
+                    {% for error in field.errors %} 
+                        <ul class="errorlist"><li>{{ error }}</li></ul> 
+                    {% endfor %} 
+                </div> 
+            {% endfor %} 
+
+            {% if form.non_field_errors %} 
+                <ul class="errorlist"> 
+                    {% for error in form.non_field_errors %} 
+                        <li>{{ error }}</li> 
+                    {% endfor %} 
+                </ul> 
+            {% endif %} 
+
+            <button type="submit">Registrarse</button> 
+        </form> 
+        <p class="login-link">¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia Sesión aquí</a></p> 
+        <p class="principal-link">Volver a la pagina principal <a href="{% url 'landing_page' %}">Pagina principal aqui</a></p> 
+    </div> 
+{% endblock content %}

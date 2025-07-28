@@ -1,0 +1,35 @@
+{% extends 'dashboard_admin/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Gestión de Productos{% endblock %}
+
+{% block content %}
+    <h2>CRUD PRODUCTOS</h2>
+    <a href="{% url 'dashboard_admin:producto_create' %}">Crear producto</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos %}
+            <tr>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.precio }}</td>
+                <td>{{ producto.stock }}</td>
+                <td>
+                    <a href="{% url 'dashboard_admin:producto_update' producto.pk %}">Editar</a> |
+                    <a href="{% url 'dashboard_admin:producto_delete' producto.pk %}">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No hay productos registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

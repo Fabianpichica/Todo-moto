@@ -1,0 +1,15 @@
+{% extends 'dashboard_admin/dashboard_base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>{% if form.instance.pk %}Editar Producto{% else %}Crear Producto{% endif %}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <button type="submit">Guardar</button>
+    <a href="{% url 'dashboard_admin:producto_list' %}">Cancelar</a>
+</form>
+{% endblock %}

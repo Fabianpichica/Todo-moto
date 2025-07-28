@@ -1,0 +1,23 @@
+{# dashboard_admin/templates/dashboard_admin/dashboard_base.html #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'dashboard_admin/styleadmin.css' %}">
+</head>
+<body>
+
+    <div class="sidebar">
+     <h2>Panel del admin</h2>
+     <a href="{% url 'dashboard_admin:producto_list' %}">Gestion de Productos</a>
+     <a href="{% url 'dashboard_admin:categoria_list' %}">Gestion de Categorias</a>
+    
+
+
+    </div>
+    
+</body>
+</html>
