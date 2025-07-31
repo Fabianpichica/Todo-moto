@@ -1,27 +1,25 @@
-{% extends 'dashboard_admin/dashboard_base.html' %}
-{% load static %}
+    {% extends 'dashboard_admin/dashboard_base.html' %}
 
-{% block title %}Inicio del Panel{% endblock %}
+    {% block title %}Dashboard Admin{% endblock %}
 
-{% block content %}
-<h1>Bienvenido al panel de administración</h1>
-
-<div class="dashboard-cards">
-  <div class="card">
-    <h3>Productos</h3>
-    <p>Total: ...</p>
-  </div>
-  <div class="card">
-    <h3>Categorías</h3>
-    <p>Total: ...</p>
-  </div>
-  <div class="card">
-    <h3>Ventas</h3>
-    <p>Total: ...</p>
-  </div>
-  <div class="card">
-    <h3>Usuarios</h3>
-    <p>Total: ...</p>
-  </div>
-</div>
-{% endblock %}
+    {% block dashboard_content %}
+        <h1 class="content-title">Bienvenido al Panel de Administración</h1>
+        <p>Desde aquí podrás gestionar productos y categorías.</p>
+        <div class="card-grid">
+            <div class="dashboard-card bg-primary-custom">
+                <div class="card-body-custom">Gestión de Productos</div>
+                <div class="card-footer-custom">
+                    <a href="{% url 'dashboard_admin:producto_list' %}">Ver Detalles</a>
+                    <div><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+            <div class="dashboard-card bg-success-custom">
+                <div class="card-body-custom">Gestión de Categorías</div>
+                <div class="card-footer-custom">
+                    <a href="{% url 'dashboard_admin:categoria_list' %}">Ver Detalles</a>
+                    <div><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    

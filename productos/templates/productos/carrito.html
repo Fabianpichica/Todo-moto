@@ -77,7 +77,7 @@
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                 <a href="{% url 'landing_page' %}" class="btn btn-secondary me-md-2">Seguir Comprando</a>
-                <a href="#" class="btn btn-danger">Proceder al Pago</a> 
+                <a href="{% url 'productos:checkout' %}" class="btn btn-danger btn-lg">Proceder al Pago</a>
             </div>
 
         {% else %}

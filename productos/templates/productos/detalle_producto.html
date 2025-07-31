@@ -1,51 +1,40 @@
-{# productos/templates/productos/detalle_producto.html #}
-{% extends 'core/base.html' %}
-{% load static %}
 
-{% block title %}{{ producto.nombre }} - Detalle del Producto{% endblock title %}
+    {# productos/templates/productos/detalle_producto.html #}
+    {% extends 'core/base.html' %} 
+    {% load static %}
 
-{% block content %}
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-6">
+    {% block title %}Detalle de Producto - {{ producto.nombre }}{% endblock %}
+
+    {% block content %}
+    <div class="main-content">
+        <div class="product-detail-container">
+            <div class="product-image-detail">
                 {% if producto.imagen %}
-                    <img src="{{ producto.imagen.url }}" class="img-fluid rounded shadow-sm" alt="{{ producto.nombre }}">
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
                 {% else %}
-                    <img src="https://via.placeholder.com/600x400?text=Imagen+No+Disponible" class="img-fluid rounded shadow-sm" alt="Imagen no disponible">
+                    <img src="https://via.placeholder.com/600x400?text=Sin+Imagen" alt="Producto sin imagen">
                 {% endif %}
             </div>
-            <div class="col-md-6">
-                <h1 class="display-4">{{ producto.nombre }}</h1>
-                <p class="lead text-success">${{ producto.precio }}</p>
-                <hr>
-                <h4>Descripción:</h4>
-                <p>{{ producto.descripcion }}</p>
-                <p><strong>Stock disponible:</strong> {{ producto.stock }} unidades</p>
-                <p><strong>Estado:</strong>
-                    {% if producto.disponible %}
-                        <span class="badge bg-success">Disponible</span>
-                    {% else %}
-                        <span class="badge bg-danger">Agotado</span>
-                    {% endif %}
-                </p>
-                <hr>
-                <p class="text-muted small">Última actualización: {{ producto.ultima_actualizacion|date:"d M Y H:i" }}</p>
+            <div class="product-info-detail">
+                <h1>{{ producto.nombre }}</h1>
+                <p class="product-price-detail">Precio: ${{ producto.precio }}</p>
+                <p class="product-description-detail">{{ producto.descripcion }}</p>
+                <p class="product-stock-detail">Stock disponible: {{ producto.stock }}</p>
+                <p class="product-category-detail">Categoría: {{ producto.categoria.nombre|default:"Sin categoría" }}</p>
 
-                {# Formulario para añadir al carrito (lo implementaremos después) #}
-                <form action="#" method="POST" class="d-grid gap-2">
+                {# Formulario de añadir al carrito con soporte AJAX #}
+                {# Asegúrate de que esta clase 'add-to-cart-form' esté presente #}
+                <form class="add-to-cart-form" data-product-id="{{ producto.pk }}" action="{% url 'productos:add_to_cart' producto.pk %}" method="post">
                     {% csrf_token %}
-                    <div class="input-group mb-3">
-                        <label for="cantidad" class="input-group-text">Cantidad:</label>
-                        <input type="number" id="cantidad" name="cantidad" class="form-control" value="1" min="1" {% if not producto.disponible or producto.stock == 0 %}disabled{% endif %}>
+                    <div class="quantity-selector">
+                        <label for="cantidad">Cantidad:</label>
+                        <input type="number" id="cantidad" name="cantidad" value="1" min="1" max="{{ producto.stock }}" class="quantity-input">
                     </div>
-                    <button type="submit" class="btn btn-danger btn-lg" {% if not producto.disponible or producto.stock == 0 %}disabled{% endif %}>
-                        Añadir al Carrito
-                    </button>
-                    {% if not producto.disponible or producto.stock == 0 %}
-                        <small class="text-danger mt-2">Producto no disponible o sin stock.</small>
-                    {% endif %}
+                    <button type="submit" class="btn-add-to-cart">Añadir al Carrito</button>
                 </form>
+                <a href="{% url 'productos:lista_productos' %}" class="btn-back-to-list">Volver a la lista de productos</a>
             </div>
         </div>
     </div>
-{% endblock content %}
+    {% endblock content %}
+    

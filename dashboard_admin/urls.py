@@ -1,10 +1,8 @@
-# dashboard_admin/urls.py
 from django.urls import path
 from . import views
 
 app_name = 'dashboard_admin' # Namespace para esta app
 
-    
 urlpatterns = [
         path('', views.dashboard_home, name='dashboard_home'),
         # URLs para Productos

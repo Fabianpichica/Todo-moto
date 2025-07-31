@@ -1,0 +1,48 @@
+ {% extends 'dashboard_admin/dashboard_base.html' %}
+
+    {% block title %}
+        {% if action == 'update' %}Editar Categoría{% else %}Crear Categoría{% endif %}
+    {% endblock %}
+
+    {% block dashboard_content %}
+        <h1 class="content-title">
+            {% if action == 'update' %}Editar Categoría: {{ categoria.nombre }}{% else %}Crear Nueva Categoría{% endif %}
+        </h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {# Renderiza los campos del formulario de Django #}
+            {% for field in form %}
+                <div class="form-group-custom">
+                    <label for="{{ field.id_for_label }}" class="form-label-custom">{{ field.label }}:</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text-custom">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="text-danger-custom">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            {# Errores no relacionados con campos específicos #}
+            {% if form.non_field_errors %}
+                <div class="messages-container">
+                    <li class="alert-error">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </li>
+                </div>
+            {% endif %}
+
+            <button type="submit" class="btn-custom btn-success-custom">
+                {% if action == 'update' %}<i class="fas fa-save me-2"></i> Guardar Cambios{% else %}<i class="fas fa-plus-circle me-2"></i> Crear Categoría{% endif %}
+            </button>
+            <a href="{% url 'dashboard_admin:categoria_list' %}" class="btn-custom btn-secondary-custom ms-2">
+                <i class="fas fa-times-circle me-2"></i> Cancelar
+            </a>
+        </form>
+    {% endblock %}
+    

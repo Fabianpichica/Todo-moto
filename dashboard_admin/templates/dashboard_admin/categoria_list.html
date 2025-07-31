@@ -1,13 +1,53 @@
-{#extends dashboard_admin/dashboard_base.html #}
-{%load static%}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>categoria lista</title>
-</head>
-<body>
-    <h2>CRUD CATEGORIAS</h2>
-</body>
-</html>
+    {% extends 'dashboard_admin/dashboard_base.html' %}
+
+    {% block title %}Categorías{% endblock %}
+
+    {% block dashboard_content %}
+        <h1 class="content-title">Gestión de Categorías</h1>
+        <a href="{% url 'dashboard_admin:categoria_create' %}" class="btn-custom btn-primary-custom">
+            <i class="fas fa-plus-circle me-2"></i> Nueva Categoría
+        </a>
+
+        {% if categorias %}
+            <div class="data-table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Fecha de Creación</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for categoria in categorias %}
+                            <tr>
+                                <td>{{ categoria.pk }}</td>
+                                <td>{{ categoria.nombre }}</td>
+                                <td>{{ categoria.descripcion|default:"N/A" }}</td>
+                                <td>{{ categoria.fecha_creacion|date:"d M Y H:i" }}</td>
+                                <td>
+                                    <a href="{% url 'dashboard_admin:categoria_update' categoria.pk %}" class="btn-custom btn-sm-custom btn-info-custom me-2" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{% url 'dashboard_admin:categoria_delete' categoria.pk %}" method="post" class="d-inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar la categoría \'{{ categoria.nombre }}\'?');">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-custom btn-sm-custom btn-danger-custom" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="messages-container">
+                <li class="alert-info">No hay categorías registradas aún.</li>
+            </div>
+        {% endif %}
+    {% endblock %}
+    
+    

@@ -1,23 +1,79 @@
-{# dashboard_admin/templates/dashboard_admin/dashboard_base.html #}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'dashboard_admin/styleadmin.css' %}">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Dashboard{% endblock %} - MotoGM Admin</title>
+        
+        {# Font Awesome para iconos #}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+        {# Tu CSS personalizado (sin Bootstrap) #}
+        <link rel="stylesheet" href="{% static 'dashboard_admin/styleadmin.css' %}"> 
 
-    <div class="sidebar">
-     <h2>Panel del admin</h2>
-     <a href="{% url 'dashboard_admin:producto_list' %}">Gestion de Productos</a>
-     <a href="{% url 'dashboard_admin:categoria_list' %}">Gestion de Categorias</a>
+    </head>
+    <body>
+        {# Contenedor principal para el layout de sidebar y contenido #}
+        <div id="wrapper">
+            <div class="sidebar-wrapper">
+                <div class="sidebar-heading">
+                    <h3>MotoGM Admin</h3>
+                </div>
+                <ul class="list-group">
+                    <a href="{% url 'dashboard_admin:dashboard_home' %}" class="list-group-item {% if request.resolver_match.url_name == 'dashboard_home' %}active{% endif %}">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="{% url 'dashboard_admin:producto_list' %}" class="list-group-item {% if 'producto' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fas fa-box-open"></i> Gestión de Productos
+                    </a>
+                    <a href="{% url 'dashboard_admin:categoria_list' %}" class="list-group-item {% if 'categoria' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fas fa-tags"></i> Gestión de Categorías
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="list-group-item">
+                        <i class="fas fa-cogs"></i> Admin Django
+                    </a>
+                    <a href="{% url 'logout' %}" class="list-group-item text-danger">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </a>
+                    <a href="{% url 'landing_page' %}" class="list-group-item">
+                        <i class="fas fa-home"></i> Ir a la Tienda
+                    </a>
+                </ul>
+            </div>
+            
+            <div id="page-content-wrapper">
+                <nav class="main-navbar">
+                    <button class="toggle-btn" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="user-info">
+                        Bienvenido, <strong>{{ request.user.username }}</strong>
+                    </div>
+                </nav>
+                <div class="container-fluid-custom">
+                    {% if messages %}
+                        <ul class="messages-container">
+                            {% for message in messages %}
+                                <li class="alert-{{ message.tags }}">
+                                    {{ message }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% block dashboard_content %}
+                        {# Contenido específico de cada página del dashboard #}
+                    {% endblock %}
+                </div>
+            </div>
+        </div> {# Cierre del div #wrapper #}
+
+        {# Script para el toggle de la sidebar #}
+        <script>
+            document.getElementById('sidebarToggle').addEventListener('click', function() {
+                document.getElementById('wrapper').classList.toggle('toggled');
+            });
+        </script>
+    </body>
+    </html>
     
-
-
-    </div>
-    
-</body>
-</html>

@@ -1,46 +1,66 @@
 {# core/templates/core/landing_page.html #}
 {% extends 'core/base.html' %} 
-{% load static %} {# Si usas {% static %} DENTRO de este archivo, necesitas esta línea #}
+{% load static %}
 
-{% block title %}Landing Page - MotoGM{% endblock title %} {# Título específico para la landing page #}
+{% block title %}Landing Page - MotoGM{% endblock title %} 
 
 {% block content %}
-    {# Aquí va el contenido que es ÚNICO de la landing page #}
-
-
-
-
-    <div class="contenido">
-        <h3 class="contenido">"Nuestros Productos Disponibles"</h3>
-        <div class="product-grid"> {# Un contenedor flexible para las tarjetas #}
-            {% for producto in productos %}
-            <div class="product-card">
-                {# Asume que tu modelo Producto tiene un campo 'imagen' #}
-                {% if producto.imagen %}
-                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
-                {% else %}
-                    {# Si no hay imagen, muestra un placeholder #}
-                    <img src="https://via.placeholder.com/300x200?text=Sin+Imagen" alt="Producto sin imagen">
-                {% endif %}
-                <div class="product-info">
-                   <h4><a href="{% url 'productos:detalle_producto' producto.pk %}">{{ producto.nombre }}</a></h4>
-                    <p>Precio: ${{ producto.precio }}</p>
-                    <p>{{ producto.descripcion|truncatechars:100 }}</p>
-
-                {# Botón "Añadir al Carrito" con formulario POST #}
-                    <form action="{% url 'productos:add_to_cart' producto.pk %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="cantidad" value="1"> {# Por ahora, siempre añade 1 unidad #}
-                    <button type="submit" class="btn btn-danger mt-2">Añadir al Carrito</button>
-                    </form>
-
-
-                    <a href="{% url 'productos:detalle_producto' producto.pk %}" class="btn btn-danger">Ver Producto</a>
-                </div>
-            </div>
-            {% empty %}
-            <p>No hay productos disponibles en este momento.</p>
-            {% endfor %}
+<div class="main-content no-padding-top">
+  <section class="landing-hero">
+    <div class="hero-overlay">
+      <div class="hero-content">
+        {# Cuadro de botones - SIEMPRE VISIBLE #}
+        <div class="hero-box hero-buttons">
+          <a href="{% url 'productos:lista_productos' %}" class="btn-hero">PRODUCTOS</a>
+          <a href="#nosotros" class="btn-hero">NOSOTROS</a>
+          <a href="#contacto" class="btn-hero">CONTACTO</a>
         </div>
+
+        {# Cuadro de login - SOLO VISIBLE SI EL USUARIO NO ESTÁ AUTENTICADO #}
+        {% if not user.is_authenticated %}
+          <div class="hero-box hero-login">
+            <h2>INICIAR SESIÓN</h2>
+            <form method="post" action="{% url 'login' %}">
+              {% csrf_token %}
+              <input type="text" name="username" placeholder="usuario o correo electronico" required>
+              <input type="password" name="password" placeholder="Contraseña" required>
+              <button type="submit">Entrar</button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
     </div>
+  </section>
+
+  {# Contenido de productos - SIEMPRE VISIBLE #}
+  <div class="contenido">
+    <h3 class="contenido" id="productos">"Nuestros Productos Disponibles"</h3>
+    <div class="product-grid">
+      {% for producto in productos %}
+        <div class="product-card">
+          {% if producto.imagen %}
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+          {% else %}
+            <img src="https://via.placeholder.com/300x200?text=Sin+Imagen" alt="Producto sin imagen">
+          {% endif %}
+          <div class="product-info">
+            <h4><a href="{% url 'productos:detalle_producto' producto.pk %}">{{ producto.nombre }}</a></h4>
+            <p>Precio: ${{ producto.precio }}</p>
+            <p>{{ producto.descripcion|truncatechars:100 }}</p>
+
+            {# Asegúrate de que esta clase 'add-to-cart-form' esté presente #}
+            <form class="add-to-cart-form" data-product-id="{{ producto.pk }}" action="{% url 'productos:add_to_cart' producto.pk %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="cantidad" value="1">
+              <button type="submit" class="btn btn-outline-warning mt-2">Añadir al Carrito</button>
+            </form>
+            <a href="{% url 'productos:detalle_producto' producto.pk %}" class="btn btn-outline-warning">Ver Producto</a>
+          </div>
+        </div>
+      {% empty %}
+        <p>No hay productos disponibles en este momento.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 {% endblock content %}
