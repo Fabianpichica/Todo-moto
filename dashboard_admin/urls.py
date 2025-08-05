@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'dashboard_admin' # Namespace para esta app
@@ -16,5 +16,17 @@ urlpatterns = [
         path('categorias/crear/', views.categoria_create, name='categoria_create'),
         path('categorias/<int:pk>/editar/', views.categoria_update, name='categoria_update'),
         path('categorias/<int:pk>/eliminar/', views.categoria_delete, name='categoria_delete'),
-    ]
+
+
+        path('ver-pedidos/', views.ver_pedidos, name='ver_pedidos'),
+
+        path('ver-clientes/', views.ver_clientes, name='ver_clientes'),
+
+        path('reportes/', views.dashboard_reportes, name='dashboard_reportes'),
+
+        path('pedidos/<int:pedido_id>/descargar-factura/', views.descargar_factura, name='descargar_factura'),
+
+        path('inventario/', include('inventario.urls')),
+]
+    
     

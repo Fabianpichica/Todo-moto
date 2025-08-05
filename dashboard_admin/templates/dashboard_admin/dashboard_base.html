@@ -30,6 +30,22 @@
                     <a href="{% url 'dashboard_admin:categoria_list' %}" class="list-group-item {% if 'categoria' in request.resolver_match.url_name %}active{% endif %}">
                         <i class="fas fa-tags"></i> Gestión de Categorías
                     </a>
+                    {# NUEVO BOTÓN: Enlace para ver los pedidos de los clientes #}
+                    <a href="{% url 'dashboard_admin:ver_pedidos' %}" class="list-group-item {% if 'ver_pedidos' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-receipt"></i> Ver Pedidos
+                    </a> 
+
+                    {# NUEVO BOTÓN: Gestión de Clientes #}
+                    <a href="{% url 'dashboard_admin:ver_clientes' %}" class="list-group-item {% if 'ver_clientes' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-users"></i> Gestión de Clientes
+                    </a>
+
+                    {# NUEVO BOTÓN: Panel de Reportes #}
+                    <a href="{% url 'dashboard_admin:dashboard_reportes' %}" class="list-group-item {% if 'dashboard_reportes' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-chart-bar"></i> Reportes
+                    </a>
+
+
                     <a href="{% url 'admin:index' %}" class="list-group-item">
                         <i class="fas fa-cogs"></i> Admin Django
                     </a>

@@ -10,6 +10,8 @@ from django.db import transaction
 from dashboard_admin.models import Categoria 
 from django.db.models import Sum, Q
 from django.contrib.auth.decorators import login_required
+from .models import Producto, Categoria, Perfil, Pedido, PedidoItem
+from inventario.models import MovimientoInventario
 
 
 COLOMBIAN_CITIES = [
@@ -328,3 +330,120 @@ def process_checkout(request):
     messages.error(request, "Método de solicitud no permitido.")
     return redirect('productos:checkout')
 
+
+
+@login_required
+def mis_pedidos(request):
+    """
+    Vista que muestra todos los pedidos del usuario actual.
+    """
+    pedidos = Pedido.objects.filter(usuario=request.user).order_by('-fecha_creacion')
+    context = {
+        'pedidos': pedidos
+    }
+    return render(request, 'productos/mis_pedidos.html', context)
+
+
+
+@login_required
+def mi_cuenta(request):
+    perfil, created = Perfil.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        # Lógica para actualizar la información de contacto
+        if 'update_info' in request.POST:
+            request.user.username = request.POST.get('username')
+            request.user.email = request.POST.get('email')
+            try:
+                request.user.save()
+                messages.success(request, 'Tu información de contacto ha sido actualizada exitosamente.')
+            except Exception as e:
+                messages.error(request, f'Ocurrió un error al actualizar tu información: {e}')
+            return redirect('productos:mi_cuenta')
+            
+        # Lógica para actualizar la dirección de envío
+        elif 'update_address' in request.POST:
+            perfil.direccion = request.POST.get('direccion')
+            perfil.ciudad = request.POST.get('ciudad')
+            perfil.codigo_postal = request.POST.get('codigo_postal')
+            perfil.pais = request.POST.get('pais')
+            try:
+                perfil.save()
+                messages.success(request, 'Tu dirección de envío ha sido actualizada exitosamente.')
+            except Exception as e:
+                messages.error(request, f'Ocurrió un error al actualizar tu dirección: {e}')
+            return redirect('productos:mi_cuenta')
+            
+    context = {
+        'perfil': perfil
+    }
+    return render(request, 'productos/mi_cuenta.html', context)
+
+
+@login_required
+def checkout_view(request):
+    if request.method == 'POST':
+        carrito = request.session.get('carrito', {})
+        if not carrito:
+            messages.error(request, "Tu carrito está vacío.")
+            return redirect('productos:ver_carrito')
+        
+        # Asume que el total ya está calculado en la sesión
+        total_pedido = sum(item['precio'] * item['cantidad'] for item in carrito.values())
+        
+        try:
+            with transaction.atomic():
+                # Creación del pedido con los campos obligatorios. 
+                # Los campos opcionales (dirección, etc.) se dejarán vacíos.
+                pedido = Pedido.objects.create(
+                    cliente=request.user,
+                    total_pedido=total_pedido,
+                    # Si tu formulario tiene estos campos, los puedes agregar aquí:
+                    # nombre=request.POST.get('nombre'),
+                    # direccion_envio=request.POST.get('direccion_envio'),
+                    # ciudad=request.POST.get('ciudad'),
+                    # codigo_postal=request.POST.get('codigo_postal'),
+                    # pais=request.POST.get('pais')
+                )
+
+                for item_data in carrito.values():
+                    producto = Producto.objects.get(id=item_data['id'])
+                    cantidad = item_data['cantidad']
+                    
+                    if producto.stock >= cantidad:
+                        # Resta el stock del producto
+                        producto.stock -= cantidad
+                        producto.save()
+                        
+                        # CREA UN REGISTRO DE MOVIMIENTO DE INVENTARIO
+                        MovimientoInventario.objects.create(
+                            producto=producto,
+                            tipo_movimiento='Salida',
+                            motivo='Venta',
+                            cantidad=cantidad,
+                            descripcion=f"Venta en línea - Pedido #{pedido.id}",
+                            usuario=request.user
+                        )
+                        
+                        PedidoItem.objects.create(
+                            pedido=pedido,
+                            producto=producto,
+                            cantidad=cantidad,
+                            precio=item_data['precio']
+                        )
+                    else:
+                        raise ValueError(f"No hay suficiente stock para {producto.nombre}.")
+                
+                del request.session['carrito']
+                messages.success(request, '¡Tu pedido ha sido realizado con éxito!')
+                return redirect('productos:mis_pedidos')
+
+        except Producto.DoesNotExist:
+            messages.error(request, "Uno de los productos en tu carrito no existe.")
+        except ValueError as e:
+            messages.error(request, str(e))
+        except Exception as e:
+            messages.error(request, f"Ocurrió un error al procesar tu pedido: {e}")
+            
+    # Si tuvieras un formulario en esta vista, iría aquí
+    return render(request, 'productos/checkout.html', {})

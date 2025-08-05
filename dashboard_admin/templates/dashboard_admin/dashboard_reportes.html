@@ -1,0 +1,188 @@
+{# dashboard_admin/templates/dashboard_admin/dashboard_reportes.html #}
+{% extends 'dashboard_admin/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Reportes{% endblock %}
+
+{% block dashboard_content %}
+<style>
+    /* Estilos para el panel de reportes */
+    .reportes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    .reporte-card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .reporte-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+    .reporte-card .icon {
+        font-size: 2.5rem;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+    .reporte-card .value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #343a40;
+    }
+    .reporte-card .title {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+    }
+    .chart-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .chart-container h3 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: #343a40;
+        text-align: center;
+    }
+</style>
+
+<div class="container-fluid-custom py-4">
+    <h1 class="content-title">Panel de Reportes y Análisis</h1>
+    <p>Revisa las métricas clave del rendimiento de tu tienda.</p>
+
+    <div class="reportes-grid">
+        <div class="reporte-card bg-info-custom">
+            <div class="icon"><i class="fas fa-receipt"></i></div>
+            <div class="value">{{ total_pedidos }}</div>
+            <div class="title">Total de Pedidos</div>
+        </div>
+        <div class="reporte-card bg-primary-custom">
+            <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+            <div class="value">${{ total_ingresos|floatformat:2 }}</div>
+            <div class="title">Ingresos Totales</div>
+        </div>
+        <div class="reporte-card bg-success-custom">
+            <div class="icon"><i class="fas fa-users"></i></div>
+            <div class="value">{{ total_clientes }}</div>
+            <div class="title">Clientes Registrados</div>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-container">
+            <h3>Ventas Mensuales</h3>
+            <canvas id="ventasChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>Top 5 Productos Más Vendidos</h3>
+            <canvas id="productosChart"></canvas>
+        </div>
+    </div>
+</div>
+
+{# Script de Chart.js y código para inicializar los gráficos #}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Datos de ventas mensuales desde el contexto de Django
+        const ventasLabels = JSON.parse('{{ ventas_mensuales_labels|safe }}');
+        const ventasData = JSON.parse('{{ ventas_mensuales_data|safe }}');
+
+        const ventasCtx = document.getElementById('ventasChart').getContext('2d');
+        const ventasChart = new Chart(ventasCtx, {
+            type: 'bar',
+            data: {
+                labels: ventasLabels,
+                datasets: [{
+                    label: 'Ingresos ($)',
+                    data: ventasData,
+                    backgroundColor: 'rgba(0, 123, 255, 0.7)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Ingresos ($)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Mes'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Datos de productos más vendidos desde el contexto de Django
+        const productosLabels = JSON.parse('{{ productos_labels|safe }}');
+        const productosData = JSON.parse('{{ productos_data|safe }}');
+        const dynamicColors = function() {
+            var r = Math.floor(Math.random() * 255);
+            var g = Math.floor(Math.random() * 255);
+            var b = Math.floor(Math.random() * 255);
+            return "rgb(" + r + "," + g + "," + b + ")";
+        };
+        const backgroundColors = productosLabels.map(item => dynamicColors());
+
+        const productosCtx = document.getElementById('productosChart').getContext('2d');
+        const productosChart = new Chart(productosCtx, {
+            type: 'doughnut',
+            data: {
+                labels: productosLabels,
+                datasets: [{
+                    label: 'Unidades Vendidas',
+                    data: productosData,
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + ' unidades';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock dashboard_content %}

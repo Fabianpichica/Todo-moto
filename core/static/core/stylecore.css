@@ -148,9 +148,12 @@
 
 /* CUADRO DE LOGIN */
 .hero-login {
-  flex: 1;
-  max-width: 450px;
-  background-color:  #c1c606 ;
+    flex: 1;
+    max-width: 90%; /* aumenta el ancho máximo */
+    background-color: #c1c606;
+    margin-left: auto; /* empuja hacia la derecha */
+    margin-right: 20px; /* ajusta la separación del borde derecho */
+    padding: 20px; /* opcional: da espacio interno */
 }
 
 .hero-login h2 {

@@ -15,5 +15,7 @@ urlpatterns = [
    path('get_cart_total_items/', views.get_cart_total_items, name='get_cart_total_items'),
    path('checkout/', views.checkout, name='checkout'),  # Ruta para el checkout
    path('process-checkout/', views.process_checkout, name='process_checkout'),
-
+   path('mis-pedidos/', views.mis_pedidos, name='mis_pedidos'),
+   path('mi-cuenta/', views.mi_cuenta, name='mi_cuenta'),
 ]
+

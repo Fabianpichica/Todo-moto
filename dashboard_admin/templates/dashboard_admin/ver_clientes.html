@@ -1,0 +1,164 @@
+{# dashboard_admin/templates/dashboard_admin/ver_clientes.html #}
+{% extends 'dashboard_admin/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Ver Clientes{% endblock %}
+
+{% block dashboard_content %}
+<style>
+    /* --- Estilos Personalizados para la página de Clientes --- */
+    
+    .card-clientes {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .card-header-clientes {
+        background-color: #007bff; /* Color azul */
+        color: #ffffff;
+        padding: 15px 20px;
+        border-radius: 8px 8s 0 0;
+        margin: -20px -20px 20px -20px;
+        text-align: center;
+    }
+
+    .card-header-clientes h6 {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+
+    .table-clientes {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .table-clientes th, .table-clientes td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table-clientes th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        color: #6c757d;
+    }
+
+    .table-clientes tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+
+    .badge-success { background-color: #28a745; color: white; }
+    .badge-danger { background-color: #dc3545; color: white; }
+
+    /* --- Estilos para la Paginación --- */
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination a, .pagination .page-item {
+        margin: 0 5px;
+        text-decoration: none;
+        color: #007bff;
+        border: 1px solid #dee2e6;
+        padding: 8px 12px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a:hover {
+        background-color: #e9ecef;
+    }
+
+    .pagination .disabled {
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+</style>
+
+<div class="container-fluid-custom py-4">
+    <h1 class="content-title">Gestión de Clientes</h1>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card-clientes">
+                <div class="card-header-clientes">
+                    <h6 class="text-white text-capitalize">Lista de Clientes Registrados</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table-clientes">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Último Acceso</th>
+                                    <th>Activo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cliente in page_obj %}
+                                <tr>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ cliente.username }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ cliente.email }}</p>
+                                    </td>
+                                    <td>
+                                        <span class="text-secondary text-xs font-weight-bold">
+                                            {% if cliente.last_login %}
+                                                {{ cliente.last_login|date:"d M Y H:i" }}
+                                            {% else %}
+                                                Nunca
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if cliente.is_active %}
+                                            <span class="badge badge-success">Sí</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">No</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Paginación #}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+            {% endif %}
+            <li class="page-item disabled">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</li>
+            {% if page_obj.has_next %}
+                <li class="page-item"><a href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock dashboard_content %}

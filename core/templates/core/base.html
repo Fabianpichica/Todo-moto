@@ -43,15 +43,40 @@
 
             {# Lógica condicional para mostrar botones de autenticación #}
             {% if user.is_authenticated %}
-                {# Si el usuario está logueado #}
-                <span class="text-white me-2">
-                   <a href="{% url 'dashboard_admin:dashboard_home' %}" class="btn btn-outline-dark"> {# Asumo que el perfil de usuario lleva al dashboard #}
-                       <i class="bi bi-person-fill"></i> {{ user.username }}
-                   </a>
-                </span> 
-                <a href="{% url 'logout' %}" class="btn btn-outline-dark">
-                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-                </a>
+                {# Si el usuario está logueado, se muestra el dropdown #}
+                <div class="dropdown">
+                    <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-fill"></i> {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li>
+                            {# NUEVO: Enlace a la página de Mis Pedidos #}
+                            <a class="dropdown-item" href="{% url 'productos:mis_pedidos' %}">
+                                <i class="bi bi-box-seam-fill me-2"></i> Mis Pedidos
+                            </a>
+                        </li>
+
+                        <li>
+                            {# NUEVO ENLACE: A la página de Mi Cuenta #}
+                            <a class="dropdown-item" href="{% url 'productos:mi_cuenta' %}">
+                                <i class="bi bi-person-circle me-2"></i> Mi Cuenta
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a class="dropdown-item" href="{% url 'dashboard_admin:dashboard_home' %}">
+                                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'logout' %}">
+                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             {% else %}
                 {# Si el usuario NO está logueado #}
                 <a href="{% url 'login' %}" class="btn btn-outline-dark">

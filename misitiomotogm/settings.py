@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'core',
     'productos',
     'dashboard_admin',
+    'inventario',
 
     
 ]

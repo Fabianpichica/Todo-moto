@@ -2,9 +2,22 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from productos.models import Producto # Importamos Producto para gestionarlo
-from .models import Categoria # Importamos el nuevo modelo Categoria
-from .forms import CategoriaForm, ProductoForm# Importamos el nuevo formulario CategoriaForm
+from productos.models import Producto 
+from .models import Categoria 
+from .forms import CategoriaForm, ProductoForm
+from django.core.paginator import Paginator
+from django.contrib.auth.models import User
+from productos.models import Pedido, PedidoItem
+from collections import defaultdict
+from django.db.models import Sum, Q
+from django.db.models.functions import ExtractMonth 
+import json
+from django.http import HttpResponse, HttpResponseForbidden
+from django.template.loader import get_template
+from io import BytesIO
+from xhtml2pdf import pisa
+
+
 
 
     # Función auxiliar para verificar si el usuario es staff (administrador)
@@ -16,6 +29,8 @@ def is_staff(user):
 def dashboard_home(request):
         # Vista principal del dashboard
         return render(request, 'dashboard_admin/dashboard_home.html')
+
+
 
     # Vistas de CRUD para Productos
     # Vistas de CRUD para Productos (¡ACTUALIZADAS AHORA!)
@@ -133,4 +148,113 @@ def categoria_delete(request, pk):
             categoria.delete()
             messages.success(request, f"Categoría '{categoria.nombre}' eliminada correctamente.")
         return redirect('dashboard_admin:categoria_list')
+
+# ¡NUEVA VISTA para ver todos los pedidos de los clientes!
+@login_required
+@user_passes_test(is_staff)
+def ver_pedidos(request):
+    pedidos = Pedido.objects.all().order_by('-fecha_creacion')
+    paginator = Paginator(pedidos, 10) # 10 pedidos por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj
+    }
+    return render(request, 'dashboard_admin/ver_pedidos.html', context)
+
+# ¡NUEVA VISTA para ver todos los clientes!
+@login_required
+@user_passes_test(is_staff)
+def ver_clientes(request):
+    # Excluye a los usuarios que son staff (para no listarse a sí mismo como cliente)
+    clientes = User.objects.filter(is_staff=False).order_by('username')
+    paginator = Paginator(clientes, 10) # 10 clientes por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj
+    }
+    return render(request, 'dashboard_admin/ver_clientes.html', context)
+
+# ¡NUEVA VISTA para el panel de reportes!
+@login_required
+@user_passes_test(is_staff)
+def dashboard_reportes(request):
+    # Obtener pedidos completados para las métricas de ventas
+    pedidos_completados = Pedido.objects.filter(estado='Completado')
+    
+    # Calcular métricas generales
+    total_pedidos = Pedido.objects.all().count()
+    total_clientes = User.objects.filter(is_staff=False).count()
+    total_ingresos = sum(p.total_pedido for p in pedidos_completados)
+    
+    # Calcular los productos más vendidos para el gráfico
+    productos_vendidos_count = defaultdict(int)
+    for item in PedidoItem.objects.all():
+        productos_vendidos_count[item.producto.nombre] += item.cantidad
+        
+    productos_vendidos_ordenados = sorted(
+        productos_vendidos_count.items(), 
+        key=lambda item: item[1], 
+        reverse=True
+    )[:5] # Obtener los 5 productos más vendidos
+
+    # Preparar datos para el gráfico de productos
+    productos_labels = [item[0] for item in productos_vendidos_ordenados]
+    productos_data = [item[1] for item in productos_vendidos_ordenados]
+    
+    # Calcular los ingresos por mes para el gráfico
+    pedidos_por_mes = pedidos_completados.annotate(month=ExtractMonth('fecha_creacion')).values('month').annotate(total=Sum('total_pedido')).order_by('month')
+    
+    meses_mapping = {
+        1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril', 5: 'Mayo', 6: 'Junio',
+        7: 'Julio', 8: 'Agosto', 9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'
+    }
+    ventas_mensuales_labels = [meses_mapping.get(item['month']) for item in pedidos_por_mes]
+    ventas_mensuales_data = [float(item['total']) for item in pedidos_por_mes]
+    
+    context = {
+        'total_pedidos': total_pedidos,
+        'total_clientes': total_clientes,
+        'total_ingresos': total_ingresos,
+        'productos_labels': json.dumps(productos_labels),
+        'productos_data': json.dumps(productos_data),
+        'ventas_mensuales_labels': json.dumps(ventas_mensuales_labels),
+        'ventas_mensuales_data': json.dumps(ventas_mensuales_data),
+    }
+    return render(request, 'dashboard_admin/dashboard_reportes.html', context)
+
+# Función auxiliar para convertir HTML a PDF
+def render_to_pdf(template_src, context_dict={}):
+    """Convierte una plantilla HTML a un archivo PDF."""
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+
+# NUEVA VISTA: Descargar factura
+@login_required
+def descargar_factura(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+
+    # Verificación de seguridad: solo el administrador o el dueño del pedido pueden descargar la factura
+    if not request.user.is_staff and pedido.cliente != request.user:
+        return HttpResponseForbidden("No tienes permiso para descargar esta factura.")
+
+    # Renderiza la plantilla HTML a PDF
+    pdf = render_to_pdf('dashboard_admin/factura_pdf.html', {'pedido': pedido})
+
+    if pdf:
+        response = pdf
+        # Con 'attachment', el navegador fuerza la descarga del archivo
+        response['Content-Disposition'] = f'attachment; filename="factura_pedido_{pedido.id}.pdf"'
+        return response
+
+    return HttpResponse("Ocurrió un error al generar la factura.", status=500)
     

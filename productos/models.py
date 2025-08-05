@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User 
 from dashboard_admin.models import Categoria # Importamos el modelo Categoria desde dashboard_admin
 from django.db.models import Sum
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=200)
@@ -78,6 +80,28 @@ class PedidoItem(models.Model):
 
     def __str__(self):
         return f"{self.cantidad} x {self.producto.nombre}"
+    
+
+class Perfil(models.Model):
+    """
+    Modelo de perfil de usuario para guardar información adicional, como la dirección de envío.
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    direccion = models.CharField(max_length=255, blank=True)
+    ciudad = models.CharField(max_length=100, blank=True)
+    codigo_postal = models.CharField(max_length=20, blank=True)
+    pais = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return f'Perfil de {self.user.username}'
+
+# Conectamos la creación del perfil con la creación del usuario
+@receiver(post_save, sender=User)
+def crear_o_actualizar_perfil_usuario(sender, instance, created, **kwargs):
+    if created:
+        Perfil.objects.create(user=instance)
+    instance.perfil.save()
+
 
 
     

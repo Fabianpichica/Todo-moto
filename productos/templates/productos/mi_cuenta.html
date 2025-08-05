@@ -1,0 +1,126 @@
+{# productos/templates/productos/mi_cuenta.html #}
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Mi Cuenta{% endblock %}
+
+{% block content %}
+<style>
+    /* Estilos personalizados para la página de Mi Cuenta */
+    .profile-card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-top: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #495057;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        transition: border-color 0.2s;
+    }
+    
+    .form-control:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+    .btn-submit {
+        background-color: #cec015;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s;
+    }
+
+    .btn-submit:hover {
+        background-color: #0056b3;
+    }
+
+    .info-section {
+        margin-bottom: 2rem;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="profile-card">
+                <h2 class="text-center mb-4">Mi Cuenta</h2>
+                
+                {# Mensajes de Django #}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="info-section">
+                    <h3>Información de Contacto</h3>
+                    <form method="post" action="{% url 'productos:mi_cuenta' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="update_info" value="true">
+                        <div class="form-group">
+                            <label for="username" class="form-label">Nombre de usuario</label>
+                            <input type="text" id="username" name="username" class="form-control" value="{{ request.user.username }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Correo electrónico</label>
+                            <input type="email" id="email" name="email" class="form-control" value="{{ request.user.email }}" required>
+                        </div>
+                        <button type="submit" class="btn-submit">Actualizar Información</button>
+                    </form>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="info-section">
+                    <h3>Dirección de Envío</h3>
+                    <form method="post" action="{% url 'productos:mi_cuenta' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="update_address" value="true">
+                        <div class="form-group">
+                            <label for="direccion" class="form-label">Dirección</label>
+                            <input type="text" id="direccion" name="direccion" class="form-control" value="{{ perfil.direccion }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ciudad" class="form-label">Ciudad</label>
+                            <input type="text" id="ciudad" name="ciudad" class="form-control" value="{{ perfil.ciudad }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="codigo_postal" class="form-label">Código Postal</label>
+                            <input type="text" id="codigo_postal" name="codigo_postal" class="form-control" value="{{ perfil.codigo_postal }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pais" class="form-label">País</label>
+                            <input type="text" id="pais" name="pais" class="form-control" value="{{ perfil.pais }}" required>
+                        </div>
+                        <button type="submit" class="btn-submit">Actualizar Dirección</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
