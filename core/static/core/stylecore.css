@@ -1,27 +1,41 @@
 /* --- Estilos para el contenedor principal de contenido (del base.html) --- */
+
 .main-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Centrar horizontalmente los elementos hijos (registercontainer) */
-    align-items: center; /* Centrar verticalmente los elementos hijos */
-    min-height: calc(100vh - 300px - 200px); /* Ajusta la altura mínima para ocupar el espacio disponible */
-    padding: 20px; 
+display: flex;
+flex-direction: column;
+justify-content: center; /* Centrar horizontalmente los elementos hijos (registercontainer) */
+align-items: center; /* Centrar verticalmente los elementos hijos */
+min-height: calc(100vh - 300px - 200px); /* Ajusta la altura mínima para ocupar el espacio disponible */
+padding: 20px;
+
 }
+
+
+
 
 
 /* --- Acomodo general del contenedor de productos debajo del carrusel --- */
+
 .contenido {
-    width: 80%;
-    max-width: 1200px;
-    margin: 0 auto 40px auto; /* Centrado y margen inferior */
-    padding: 20px;
-    text-align: center;
+width: 80%;
+max-width: 1200px;
+margin: 0 auto 40px auto; /* Centrado y margen inferior */
+padding: 20px;
+text-align: center;
+
 }
 
+
+
 .contenido h3 {
-    margin-bottom: 30px;
-    color: #000;
+margin-bottom: 30px;
+color: #000;
 }
+
+
+
+
+
 
 
 
@@ -29,161 +43,210 @@
 /* --- Estilos para el banner (container1) --- */
 
 .no-padding-top {
-    padding-top: 0 !important;
+padding-top: 0 !important;
 }
+
+
+
 
 
 .top-banner {
-    /*background-image:  url('/static/core/img/colorbanner.png'); /* Asegúrate de que la ruta sea correcta */
-    padding: 10px 20px;
-    color: white;
+/*background-image: url('/static/core/img/colorbanner.png'); /* Asegúrate de que la ruta sea correcta */
+padding: 10px 20px;
+color: white;
+
 }
+
+
 
 .banner-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+display: flex;
+justify-content: space-between;
+align-items: center;
+
 }
+
+
 
 .banner-logo{
- margin-right: 1500px; /* Ajusta este valor según sea necesario para alinear el logo a la izquierda */
+margin-right: 1500px; /* Ajusta este valor según sea necesario para alinear el logo a la izquierda */
+}
 
-}
 .banner-logo img {
-    height: 250px;
-    max-width: 100%;
-    object-fit: contain;
+height: 250px;
+max-width: 100%;
+object-fit: contain;
 }
+
+
 
 /* --- Estilos para la imagen de fondo de moto --- */
 
 .landing-hero {
-  background-image: url('/static/core/img/fondoo.jpeg'); /* o usa {% static %} si lo embebes */
-  background-size: cover;         
-  background-position: center;    
-  background-repeat: no-repeat;  
-  height: 100vh;                  
-  width: 100vw;                   
-  margin: 0;
-  padding: 0;
-  display: flex;                  
-  align-items: center;           
-  justify-content: center;  
+background-image: url('/static/core/img/fondoo.jpeg'); /* o usa {% static %} si lo embebes */
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+height: 100vh;
+width: 100vw;
+margin: 0;
+padding: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+
 }
+
+
 
 .hero-overlay {
-  background-color: rgba(0, 0, 0, 0.4); /* transparencia negra */
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+background-color: rgba(0, 0, 0, 0.4); /* transparencia negra */
+width: 100%;
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
+
+
 .hero-content {
-  color: white;
-  text-align: center;
-  padding: 2rem;
+color: white;
+text-align: center;
+padding: 2rem;
+
 }
+
+
 
 .hero-content h1 {
-  font-size: 48px;
-  margin-bottom: 10px;
-  font-family: 'TuFuente', sans-serif;
+font-size: 48px;
+margin-bottom: 10px;
+font-family: 'TuFuente', sans-serif;
 }
+
+
 
 .hero-content p {
-  font-size: 20px;
+font-size: 20px;
 }
+
 /* cuadros de login y y opciones de productos sobre la imagen*/
+
 .hero-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 80vh; /* Centrado vertical */
-  gap: 60px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 40px;
+max-width: 1200px;
+margin: 0 auto;
+height: 80vh; /* Centrado vertical */
+gap: 60px;
+
 }
+
+
 
 /* Este es el contenedor que separa los cuadros */
+
 .login-hero-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 60px;
-  max-width: 1200px;
-  width: 100%;
-  padding: 40px;
-  box-sizing: border-box;
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+gap: 60px;
+max-width: 1200px;
+width: 100%;
+padding: 40px;
+box-sizing: border-box;
+
 }
+
+
 
 .hero-box {
-  background-color:  #c1c606 ;
-  padding: 40px 30px;
-  border-radius: 25px;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+background-color: #c1c606 ;
+padding: 40px 30px;
+border-radius: 25px;
+color: white;
+box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
 }
+
+
 
 /* CUADRO DE BOTONES */
+
 .hero-buttons {
-  flex: 1;
-  max-width: 400px;
+flex: 1;
+max-width: 400px;
 }
+
+
 
 .hero-buttons a {
-  display: block;
-  margin: 20px 0;
-  padding: 18px 0;
-  background-color: #9c9d15;
-  color: white;
-  text-decoration: none;
-  border-radius: 15px;
-  font-weight: bold;
-  font-size: 18px;
-  text-align: center;
+display: block;
+margin: 20px 0;
+padding: 18px 0;
+background-color: #9c9d15;
+color: white;
+text-decoration: none;
+border-radius: 15px;
+font-weight: bold;
+font-size: 18px;
+text-align: center;
+
 }
+
+
 
 /* CUADRO DE LOGIN */
+
 .hero-login {
-    flex: 1;
-    max-width: 90%; /* aumenta el ancho máximo */
-    background-color: #c1c606;
-    margin-left: auto; /* empuja hacia la derecha */
-    margin-right: 20px; /* ajusta la separación del borde derecho */
-    padding: 20px; /* opcional: da espacio interno */
+flex: 1;
+max-width: 90%; /* aumenta el ancho máximo */
+background-color: #c1c606;
+margin-left: auto; /* empuja hacia la derecha */
+margin-right: 20px; /* ajusta la separación del borde derecho */
+padding: 20px; /* opcional: da espacio interno */
+
 }
+
+
 
 .hero-login h2 {
-  font-size: 28px;
-  margin-bottom: 20px;
+font-size: 28px;
+margin-bottom: 20px;
+
 }
+
+
 
 .hero-login form input {
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 12px;
-  background-color: #181818;;
-  color: white;
-  font-size: 16px;
+width: 100%;
+margin-bottom: 15px;
+padding: 12px 16px;
+border: none;
+border-radius: 12px;
+background-color: #181818;;
+color: white;
+font-size: 16px;
+
 }
+
+
 
 .hero-login form button {
-  background-color: #000;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  border-radius: 12px;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-}
+background-color: #000;
+border: none;
+padding: 12px;
+width: 100%;
+border-radius: 12px;
+color: white;
+font-weight: bold;
+font-size: 16px;
+cursor: pointer;
 
+}
 
 
 
@@ -193,110 +256,210 @@
 
 
 
+.container1{
 
-
-.container1{ 
 background-image: url('/static/core/img/colorbanner.png');
+
 background-size: cover; /* Ajusta la imagen para que cubra todo el contenedor */
+
 background-position: center; /* Centra la imagen de fondo */
+
 background-repeat: no-repeat; /* Evita que la imagen se repita */
+
 height: 300px; /* Dale una altura fija para que el banner sea visible */
-display: flex; /* Para centrar el contenido (h2,  botones) dentro del banner */
+
+display: flex; /* Para centrar el contenido (h2, botones) dentro del banner */
+
 flex-direction: column; /* Apila el contenido verticalmente */
+
 justify-content: center; /* Centra verticalmente el contenido */
+
 align-items: center; /* Centra horizontalmente el contenido */
+
 color: white; /* Asegura que el texto sea blanco sobre el banner oscuro si lo es */
+
 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para que el texto resalte */
+
 padding: 20px; /* Espaciado interno */
+
 }
+
+
+
 
 
 .container1 .tituloland,
+
 .container1 .subtitulo {
-    color: white; /* Asegúrate de que el texto dentro del banner sea blanco */
-    margin-bottom: 10px; /* Espaciado entre título y subtítulo */
+
+color: white; /* Asegúrate de que el texto dentro del banner sea blanco */
+
+margin-bottom: 10px; /* Espaciado entre título y subtítulo */
+
 }
+
+
 
 /* Ajusta los botones para que se vean bien sobre el banner */
+
 .container1 .btn {
-    margin: 10px 5px;
-    
+
+margin: 10px 5px;
+
+
 }
+
+
 
 .banner-buttons {
-    position: absolute;
-    bottom: 0px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
+
+position: absolute;
+
+bottom: 0px;
+
+right: 20px;
+
+display: flex;
+
+gap: 10px;
+
 }
+
+
 
 .container1 {
-    position: relative; /* Necesario para que los botones se posicionen dentro */
+
+position: relative; /* Necesario para que los botones se posicionen dentro */
+
 }
+
+
 
 /* Estilos para el carrusel */
+
 #carouselExampleControls, #carouselExampleIndicators { /* Usa el ID de tu carrusel */
-    margin-top: 20px; /* Un poco de margen superior, si lo necesitas */
-    margin-bottom: 20px; /* Un poco de margen inferior */
-    width: 80%; /* Ancho del carrusel, por ejemplo 80% del contenedor padre */
-    max-width: 1000px; /* Un ancho máximo para pantallas grandes */
-    margin-left: auto; /* Centrar horizontalmente */
-    margin-right: auto; /* Centrar horizontalmente */
-    overflow: hidden; /* Asegura que el contenido no se salga */
-    border-radius: 8px; /* Bordes ligeramente redondeados, opcional */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Una sombra sutil, opcional */
+
+margin-top: 20px; /* Un poco de margen superior, si lo necesitas */
+
+margin-bottom: 20px; /* Un poco de margen inferior */
+
+width: 80%; /* Ancho del carrusel, por ejemplo 80% del contenedor padre */
+
+max-width: 1000px; /* Un ancho máximo para pantallas grandes */
+
+margin-left: auto; /* Centrar horizontalmente */
+
+margin-right: auto; /* Centrar horizontalmente */
+
+overflow: hidden; /* Asegura que el contenido no se salga */
+
+border-radius: 8px; /* Bordes ligeramente redondeados, opcional */
+
+box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Una sombra sutil, opcional */
+
 }
+
+
 
 .carousel-item img {
-    height: 400px; /* Altura fija para todas las imágenes del carrusel */
-    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
-    /* Si las imágenes se ven estiradas o cortadas, prueba: */
-    /* object-fit: contain; (la imagen se ajusta manteniendo la relación de aspecto) */
-    /* object-fit: fill; (la imagen se estira para llenar) */
+
+height: 400px; /* Altura fija para todas las imágenes del carrusel */
+
+object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+
+/* Si las imágenes se ven estiradas o cortadas, prueba: */
+
+/* object-fit: contain; (la imagen se ajusta manteniendo la relación de aspecto) */
+
+/* object-fit: fill; (la imagen se estira para llenar) */
+
 }
 
+
+
 /* Opcional: Para asegurar que el contenido principal no se superponga con el carrusel */
+
 .main-content {
-    /* ... Tus estilos existentes de flexbox para centrar ... */
-    padding-top: 0px; /* Añade un poco de padding si el carrusel está justo antes del contenido */
-    padding-bottom: 20px; /* Si hay más contenido después del carrusel */
+
+/* ... Tus estilos existentes de flexbox para centrar ... */
+
+padding-top: 0px; /* Añade un poco de padding si el carrusel está justo antes del contenido */
+
+padding-bottom: 20px; /* Si hay más contenido después del carrusel */
+
 }
+
+
+
 
 
 /* --- Estilos lista productos --- */
+
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px; 
+
+display: grid;
+
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+gap: 20px;
+
+padding: 20px;
+
 }
+
+
 
 .product-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+
+border: 1px solid #ddd;
+
+border-radius: 8px;
+
+overflow: hidden;
+
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+transition: transform 0.2s;
+
 }
+
+
 
 .product-card:hover {
-    transform: translateY(-5px);
+
+transform: translateY(-5px);
+
 }
+
+
 
 .product-card img {
-    width: 100%;
-    height: 200px; /* Ajusta la altura si lo necesitas */
-    object-fit: cover;
+
+width: 100%;
+
+height: 200px; /* Ajusta la altura si lo necesitas */
+
+object-fit: cover;
+
 }
+
+
 
 .product-info {
-    padding: 15px;
+
+padding: 15px;
+
 }
+
+
 
 .product-info h4 a{
-    color:  #000 ;
-    text-decoration: none;
+
+color: #000 ;
+
+text-decoration: none;
+
+
 
 }
 
@@ -308,103 +471,213 @@ padding: 20px; /* Espaciado interno */
 
 
 
- /* CSS para la pagina de register */
-        .registercontainer {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            width: 400px;
-            max-width: 90%; /* Asegura que no se desborde en pantallas pequeñas */
-            text-align: center;
-             margin: auto; 
-           
-        }
-        
-        .registercontainer h2 {
-            margin-bottom: 25px;
-            color: #333;
-            font-size: 1.8em;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box; /* Incluye padding y borde en el ancho total */
-        }
-        .form-group ul.errorlist {
-            color: red;
-            list-style-type: none;
-            padding: 0;
-            margin-top: 5px;
-            font-size: 0.85em;
-        }
-        .form-group .helptext {
-            font-size: 0.8em;
-            color: #777;
-            margin-top: 5px;
-            display: block;
-        }
-        .registercontainer button {
-            width: 100%;
-            padding: 12px;
-            background-color: #a3083c !important;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.1em;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-        .registercontainer button:hover {
-            background-color: #a3083c;
-        }
-        .login-link {
-            margin-top: 20px;
-            font-size: 0.9em;
-        }
-        .login-link a {
-            color: #a3083c;
-            text-decoration: none;
-        }
-        
-        .principal-link  a{
-            color: #a3083c;
-            text-decoration: none;
-        }
+
+
+
+
+
+
+
+
+
+
+/* CSS para la pagina de register */
+
+.registercontainer {
+
+background-color: white;
+
+padding: 30px;
+
+border-radius: 8px;
+
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+width: 400px;
+
+max-width: 90%; /* Asegura que no se desborde en pantallas pequeñas */
+
+text-align: center;
+
+margin: auto;
+
+
+}
+
+
+.registercontainer h2 {
+
+margin-bottom: 25px;
+
+color: #333;
+
+font-size: 1.8em;
+
+}
+
+.form-group {
+
+margin-bottom: 15px;
+
+text-align: left;
+
+}
+
+.form-group label {
+
+display: block;
+
+margin-bottom: 5px;
+
+font-weight: bold;
+
+color: #555;
+
+}
+
+.form-group input {
+
+width: 100%;
+
+padding: 10px;
+
+border: 1px solid #ddd;
+
+border-radius: 5px;
+
+box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+
+}
+
+.form-group ul.errorlist {
+
+color: red;
+
+list-style-type: none;
+
+padding: 0;
+
+margin-top: 5px;
+
+font-size: 0.85em;
+
+}
+
+.form-group .helptext {
+
+font-size: 0.8em;
+
+color: #777;
+
+margin-top: 5px;
+
+display: block;
+
+}
+
+.registercontainer button {
+
+width: 100%;
+
+padding: 12px;
+
+background-color: #a3083c !important;
+
+color: white;
+
+border: none;
+
+border-radius: 5px;
+
+cursor: pointer;
+
+font-size: 1.1em;
+
+margin-top: 20px;
+
+transition: background-color 0.3s ease;
+
+}
+
+.registercontainer button:hover {
+
+background-color: #a3083c;
+
+}
+
+.login-link {
+
+margin-top: 20px;
+
+font-size: 0.9em;
+
+}
+
+.login-link a {
+
+color: #a3083c;
+
+text-decoration: none;
+
+}
+
+
+.principal-link a{
+
+color: #a3083c;
+
+text-decoration: none;
+
+}
+
+
+
 
 
 /* CSS para la pagina de login */
-        .login-container{
-        background-color: white;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        width: 400px;
-        max-width: 90%; 
-        text-align: center;
-        margin: auto;     
 
-        }
+.login-container{
+
+background-color: white;
+
+padding: 30px;
+
+border-radius: 8px;
+
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+width: 400px;
+
+max-width: 90%;
+
+text-align: center;
+
+margin: auto;
 
 
-        .register-link a{
-            color: #a3083c;
-            text-decoration: none;
 
-        }
+}
+
+
+
+
+
+.register-link a{
+
+color: #a3083c;
+
+text-decoration: none;
+
+
+
+}
+
+
+
+
+
+
+
 
 
 
@@ -413,127 +686,539 @@ padding: 20px; /* Espaciado interno */
 
 /* estilos para mi footer*/
 
+
+
 /* --- FOOTER --- */
+
 /* Contenedor principal del footer, aquí aplicamos el color de fondo y el borde */
+
 .main-footer {
-    background-image: url('/static/core/img/colorbanner.png');
-    background-color: #000;
-    border-top: 2px solid #000; /* Borde superior del mismo color, para consistencia */
-    border-bottom: 2px solid #000; /* Borde inferior también */
-    padding: 40px 20px; /* Espaciado interno */
-    font-size: 0.95em; /* Tamaño de fuente base */
-    color: white;
-    position: relative;
-    background-size: cover;       /* O "contain" o un valor específico como "100% auto" */
-    background-repeat: no-repeat; /* Evita que se repita */
-    background-position: left;  /* Centra la imagen */ /* Color de texto por defecto para todo el footer */
-}
-/* ajustar transparencia de img fondo footer*/
-.main-footer::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.1); /* Negro con 10% de opacidad */
-    z-index: 0;
+
+background-image: url('/static/core/img/colorbanner.png');
+
+background-color: #000;
+
+border-top: 2px solid #000; /* Borde superior del mismo color, para consistencia */
+
+border-bottom: 2px solid #000; /* Borde inferior también */
+
+padding: 40px 20px; /* Espaciado interno */
+
+font-size: 0.95em; /* Tamaño de fuente base */
+
+color: white;
+
+position: relative;
+
+background-size: cover; /* O "contain" o un valor específico como "100% auto" */
+
+background-repeat: no-repeat; /* Evita que se repita */
+
+background-position: left; /* Centra la imagen */ /* Color de texto por defecto para todo el footer */
+
 }
 
-.main-footer > * {
-    position: relative;
-    z-index: 1; /* Asegura que el contenido esté por encima de la capa oscura */
+/* ajustar transparencia de img fondo footer*/
+
+.main-footer::before {
+
+content: "";
+
+position: absolute;
+
+top: 0;
+
+left: 0;
+
+width: 100%;
+
+height: 100%;
+
+background: rgba(0, 0, 0, 0.1); /* Negro con 10% de opacidad */
+
+z-index: 0;
+
 }
+
+
+
+.main-footer > * {
+
+position: relative;
+
+z-index: 1; /* Asegura que el contenido esté por encima de la capa oscura */
+
+}
+
+
 
 /* Fin ajustar transparencia de img fondo footer*/
 
+
+
 /* Contenedor de las columnas de contenido del footer */
+
 .footer-content {
-    display: flex; /* Habilita Flexbox para las columnas */
-    flex-wrap: wrap; /* Permite que las columnas salten de línea en pantallas pequeñas */
-    justify-content: space-around; /* Distribuye el espacio entre las columnas */
-    max-width: 1200px; /* Ancho máximo del contenido del footer */
-    margin: 0 auto; /* Centra el contenido del footer horizontalmente */
-    gap: 30px; /* Espacio entre las columnas */
-    text-align: left; /* Alineación de texto predeterminada para el contenido de las columnas */
+
+display: flex; /* Habilita Flexbox para las columnas */
+
+flex-wrap: wrap; /* Permite que las columnas salten de línea en pantallas pequeñas */
+
+justify-content: space-around; /* Distribuye el espacio entre las columnas */
+
+max-width: 1200px; /* Ancho máximo del contenido del footer */
+
+margin: 0 auto; /* Centra el contenido del footer horizontalmente */
+
+gap: 30px; /* Espacio entre las columnas */
+
+text-align: left; /* Alineación de texto predeterminada para el contenido de las columnas */
+
 }
+
+
 
 /* Estilos para los títulos de cada sección del footer (Acerca de, Contacto, Síguenos) */
+
 .main-footer h3 {
-    color: white; /* Color del título en blanco para contraste */
-    margin-bottom: 15px; /* Espacio debajo del título */
-    font-size: 1.2em; /* Tamaño de fuente del título */
-    text-align: center; /* Centra los títulos dentro de sus columnas */
+
+color: white; /* Color del título en blanco para contraste */
+
+margin-bottom: 15px; /* Espacio debajo del título */
+
+font-size: 1.2em; /* Tamaño de fuente del título */
+
+text-align: center; /* Centra los títulos dentro de sus columnas */
+
 }
+
+
 
 /* Estilos para los párrafos de descripción y contacto */
+
 .footer-description p,
+
 .footer-contact p {
-    color: #f0f0f0; /* Un blanco ligeramente más suave para los párrafos */
-    margin-bottom: 8px; /* Espacio entre párrafos */
-    line-height: 1.6; /* Altura de línea para mejor legibilidad */
-    text-align: center; /* Centra el texto de los párrafos */
+
+color: #f0f0f0; /* Un blanco ligeramente más suave para los párrafos */
+
+margin-bottom: 8px; /* Espacio entre párrafos */
+
+line-height: 1.6; /* Altura de línea para mejor legibilidad */
+
+text-align: center; /* Centra el texto de los párrafos */
+
 }
+
+
 
 /* Estilos específicos para el enlace de teléfono */
+
 .footer-contact .phone-link {
-    color: white; /* Color del enlace en blanco */
-    text-decoration: underline; /* Subrayado para indicar que es un enlace */
-    transition: color 0.3s ease; /* Transición suave para el hover */
+
+color: white; /* Color del enlace en blanco */
+
+text-decoration: underline; /* Subrayado para indicar que es un enlace */
+
+transition: color 0.3s ease; /* Transición suave para el hover */
+
 }
+
 .footer-contact .phone-link:hover {
-    color: #ffe066; /* Un amarillo suave al pasar el ratón para destacar */
+
+color: #ffe066; /* Un amarillo suave al pasar el ratón para destacar */
+
 }
+
+
 
 /* Estilos para el contenedor de iconos sociales */
+
 .social-icons {
-    display: flex; /* Habilita Flexbox para los iconos */
-    justify-content: center; /* Centra los iconos horizontalmente */
-    margin-top: 15px; /* Espacio superior si es necesario */
+
+display: flex; /* Habilita Flexbox para los iconos */
+
+justify-content: center; /* Centra los iconos horizontalmente */
+
+margin-top: 15px; /* Espacio superior si es necesario */
+
 }
+
+
 
 /* Estilos para cada icono social (los enlaces 'a' dentro de .social-icons) */
+
 .social-icons a {
-    color: white; /* Color de los iconos en blanco */
-    font-size: 24px; /* Tamaño de los iconos */
-    margin: 0 10px; /* Espacio a los lados de cada icono */
-    transition: color 0.3s ease; /* Transición suave para el hover */
+
+color: white; /* Color de los iconos en blanco */
+
+font-size: 24px; /* Tamaño de los iconos */
+
+margin: 0 10px; /* Espacio a los lados de cada icono */
+
+transition: color 0.3s ease; /* Transición suave para el hover */
+
 }
+
+
 
 .social-icons a:hover {
-    color: #ffe066; /* El mismo amarillo suave al pasar el ratón por los iconos */
+
+color: #ffe066; /* El mismo amarillo suave al pasar el ratón por los iconos */
 }
+
+
 
 /* Estilos para la sección de copyright en la parte inferior del footer */
+
 .footer-bottom {
-    text-align: center; /* Centra el texto de copyright */
-    margin-top: 30px; /* Espacio superior para separarlo del contenido de arriba */
-    padding-top: 20px; /* Espaciado interno superior */
-    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Línea divisoria sutil blanca transparente */
-    font-size: 0.85em; /* Tamaño de fuente más pequeño */
-    color: #f0f0f0; /* Texto en un blanco suave */
+text-align: center; /* Centra el texto de copyright */
+margin-top: 30px; /* Espacio superior para separarlo del contenido de arriba */
+padding-top: 20px; /* Espaciado interno superior */
+border-top: 1px solid rgba(255, 255, 255, 0.2); /* Línea divisoria sutil blanca transparente */
+font-size: 0.85em; /* Tamaño de fuente más pequeño */
+color: #f0f0f0; /* Texto en un blanco suave */
 }
+
+
+
+/* estilos para la saccion de Detalles del producto */
+
+.product-detail-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: auto;
+}
+
+.product-image-detail {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+}
+
+.product-image-detail img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.product-info-detail {
+    flex: 1;
+    min-width: 300px;
+}
+
+.product-info-detail h1 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.product-info-detail p {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.quantity-selector {
+    margin: 20px 0;
+}
+
+.quantity-selector label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.quantity-input {
+    padding: 8px;
+    width: 80px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Botón añadir al carrito */
+.btn-add-to-cart {
+    display: inline-block;
+    background-color: #c1c606;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-add-to-cart:hover {
+    background-color: #9c9d15;
+}
+
+/* Botón volver */
+.btn-back-to-list {
+    display: inline-block;
+    background-color: #a3083c;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back-to-list:hover {
+    background-color: #7a062d;
+}
+
+/*contnedor principal en la vista del carrito.html */
+/* Contenedor principal del carrito */
+.container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Título del carrito */
+.container h1 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Tabla del carrito */
+.table {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Celda de producto con imagen */
+.table td a {
+    font-weight: 600;
+    color: #000;
+    text-decoration: none;
+}
+
+.table td a:hover {
+    text-decoration: underline;
+}
+
+/* Inputs de cantidad */
+.table input[type="number"] {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+/* Botones pequeños: actualizar y eliminar */
+.btn-outline-secondary {
+    border-color: #c1c606;
+    color: #c1c606;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #c1c606;
+    color: white;
+}
+
+.btn-outline-danger {
+    border-color: #a3083c;
+    color: #a3083c;
+}
+
+.btn-outline-danger:hover {
+    background-color: #a3083c;
+    color: white;
+}
+
+/* Totales del carrito */
+.table tfoot th {
+    font-size: 1.2em;
+    color: #000;
+}
+
+/* Botones finales (seguir comprando / pagar) */
+.btn-secondary {
+    background-color: #c1c606;
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-secondary:hover {
+    background-color: #9c9d15;
+}
+
+.btn-danger {
+    background-color: #a3083c;
+    border: none;
+    font-weight: bold;
+}
+
+.btn-danger:hover {
+    background-color: #7a062d;
+}
+
+/* Mensajes flash */
+.messages li {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 0.95em;
+}
+
+/* Mensaje de carrito vacío */
+.alert-info {
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+}
+
+/* Responsive: ajustes en móviles */
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .d-md-flex {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+}
+/* fin de carrito.html*/
+
+.bg-motoyellow {
+    background-color:#9c9d15 !important; /* o el color exacto del banner */
+    color: #000 !important; /* texto negro para contraste */
+}
+
+
+
+
+
 
 /* --- MEDIA QUERIES (PARA RESPONSIVIDAD) --- */
-@media (max-width: 768px) {
-    .footer-content {
-        flex-direction: column; /* Apila las columnas del footer verticalmente */
-        align-items: center; /* Centra los elementos */
-        text-align: center; /* Centra el texto dentro de cada columna */
-    }
-    .footer-description,
-    .footer-contact,
-    .footer-social {
-        width: 90%; /* Ocupa casi todo el ancho disponible */
-        margin-bottom: 25px; /* Más espacio entre secciones apiladas */
-    }
-    .main-footer h3 {
-        text-align: center; /* Asegura que los títulos estén centrados en móvil */
-    }
-    .footer-description p,
-    .footer-contact p {
-        text-align: center; /* Asegura que los párrafos estén centrados en móvil */
-    }
+
+@media (max-width: 992px) {
+  .contenido {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+    gap: 30px;
+  }
+
+  .login-hero-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 20px;
+  }
+
+  .hero-box,
+  .hero-login,
+  .hero-buttons {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .banner-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .banner-logo {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .banner-buttons {
+    position: static;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  .container1 {
+    height: auto;
+    padding: 30px 15px;
+    text-align: center;
+  }
+
+  .carousel-item img {
+    height: 250px;
+  }
+
+  .registercontainer,
+  .login-container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    padding: 10px;
+  }
+
+  .main-content {
+    padding: 10px;
+  }
 }
 
-  
+@media (max-width: 576px) {
+  .hero-content h1 {
+    font-size: 32px;
+  }
+
+  .hero-content p {
+    font-size: 16px;
+  }
+
+  .hero-login h2 {
+    font-size: 22px;
+  }
+
+  .hero-login form input,
+  .hero-login form button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .hero-buttons a {
+    font-size: 16px;
+    padding: 14px 0;
+  }
+
+  .carousel-item img {
+    height: 180px;
+  }
+
+  .footer-content {
+    gap: 20px;
+  }
+}

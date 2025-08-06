@@ -6,34 +6,37 @@
 
 {% block content %}
 <div class="container my-5">
-    <h1 class="text-center mb-4">Finalizar Compra</h1>
+    <h1 class="text-center mb-4 text-dark fw-bold">Finalizar Compra</h1>
     
-    <div class="row">
-        {# Sección del formulario de envío #}
-        <div class="col-md-7">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-danger text-white">
+    <div class="row gy-4">
+        {# 👉 FORMULARIO DE ENVÍO #}
+        <div class="col-lg-7">
+            <div class="card shadow border-0">
+                <div class="card-header bg-motoyellow text-white">
                     <h5 class="mb-0">Información de Envío</h5>
                 </div>
                 <div class="card-body">
                     <form action="{% url 'productos:process_checkout' %}" method="post">
                         {% csrf_token %}
-                        
+
                         <div class="mb-3">
-                            <label for="id_nombre_completo" class="form-label">Nombre Completo</label>
+                            <label for="id_nombre_completo" class="form-label fw-semibold">Nombre Completo</label>
                             <input type="text" class="form-control" id="id_nombre_completo" name="nombre_completo" value="{{ first_name }} {{ last_name }}" required>
                         </div>
+
                         <div class="mb-3">
-                            <label for="id_email" class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="id_email" name="email" value="{{ email }}" readonly disabled>
+                            <label for="id_email" class="form-label fw-semibold">Correo Electrónico</label>
+                            <input type="email" class="form-control-plaintext" id="id_email" name="email" value="{{ email }}" readonly disabled>
                         </div>
+
                         <div class="mb-3">
-                            <label for="id_direccion" class="form-label">Dirección de Envío</label>
+                            <label for="id_direccion" class="form-label fw-semibold">Dirección de Envío</label>
                             <input type="text" class="form-control" id="id_direccion" name="direccion" placeholder="Ej: Calle 10 # 5-25" required>
                         </div>
+
                         <div class="mb-3">
-                            <label for="id_ciudad" class="form-label">Ciudad</label>
-                            <select class="form-control" id="id_ciudad" name="ciudad" required>
+                            <label for="id_ciudad" class="form-label fw-semibold">Ciudad</label>
+                            <select class="form-select" id="id_ciudad" name="ciudad" required>
                                 <option value="" disabled selected>Selecciona tu ciudad</option>
                                 {% for ciudad in ciudades %}
                                     <option value="{{ ciudad }}">{{ ciudad }}</option>
@@ -42,55 +45,60 @@
                         </div>
 
                         <hr>
-                        
-                        <h5 class="mb-3">Método de Pago</h5>
+
+                        <h5 class="mb-3 fw-bold text-dark">Método de Pago</h5>
+
                         <div class="form-check mb-2">
                             <input class="form-check-input" type="radio" name="metodo_pago" id="pago_tarjeta" value="Tarjeta de Crédito" required>
-                            <label class="form-check-label" for="pago_tarjeta">
+                            <label class="form-check-label d-flex align-items-center" for="pago_tarjeta">
                                 Tarjeta de Crédito
-                                <img src="{% static 'images/tarjetas.png' %}" alt="Tarjetas de crédito" class="ms-2" width="100">
+                                <img src="{% static 'images/tarjetas.png' %}" alt="Tarjetas" class="ms-2" width="100">
                             </label>
                         </div>
+
                         <div class="form-check mb-2">
                             <input class="form-check-input" type="radio" name="metodo_pago" id="pago_pse" value="PSE">
-                            <label class="form-check-label" for="pago_pse">
+                            <label class="form-check-label d-flex align-items-center" for="pago_pse">
                                 PSE (Pagos en línea)
                                 <img src="{% static 'images/pse.png' %}" alt="PSE" class="ms-2" width="50">
                             </label>
                         </div>
+
                         <div class="form-check mb-2">
                             <input class="form-check-input" type="radio" name="metodo_pago" id="pago_efecty" value="Efecty">
-                            <label class="form-check-label" for="pago_efecty">
+                            <label class="form-check-label d-flex align-items-center" for="pago_efecty">
                                 Efecty (Puntos de pago)
                                 <img src="{% static 'images/efecty.png' %}" alt="Efecty" class="ms-2" width="50">
                             </label>
                         </div>
 
-                        <button type="submit" class="btn btn-danger btn-lg w-100 mt-4">Pagar ${{ total_carrito|floatformat:2 }}</button>
+                        <button type="submit" class="btn bg bg-motoyellow text-dark btn-lg w-100 mt-4 shadow-sm">Pagar ${{ total_carrito|floatformat:2 }}</button>
                     </form>
                 </div>
             </div>
         </div>
 
-        {# Sección de resumen del pedido #}
-        <div class="col-md-5">
-            <div class="card shadow-sm">
-                <div class="card-header bg-danger text-white">
-                    <h5 class="mb-0">Resumen del Pedido</h5>
+        {# 👉 RESUMEN DEL PEDIDO #}
+        <div class="col-lg-5">
+            <div class="card shadow border-0">
+                <div class="card-header bg-motoyellow text-dark">
+                    <h5 class="mb-0 fw-semibold">Resumen del Pedido</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         {% for item in carrito_items %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>{{ item.producto.nombre }}</span>
-                                <span class="badge bg-secondary rounded-pill me-2">{{ item.cantidad }}</span>
-                                <span class="ms-auto">${{ item.get_total_item_price|floatformat:2 }}</span>
+                                <div class="d-flex flex-column">
+                                    <span class="fw-semibold">{{ item.producto.nombre }}</span>
+                                    <small class="text-muted">x{{ item.cantidad }}</small>
+                                </div>
+                                <span class="fw-bold">${{ item.get_total_item_price|floatformat:2 }}</span>
                             </li>
                         {% endfor %}
                     </ul>
                     <hr>
-                    <div class="d-flex justify-content-between fw-bold mt-2">
-                        <span>Total:</span>
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total+IVA = </span>
                         <span>${{ total_carrito|floatformat:2 }}</span>
                     </div>
                 </div>
@@ -98,9 +106,4 @@
         </div>
     </div>
 </div>
-
-{# Imágenes que usaré, asegúrate de tenerlas en tu carpeta `static/images` #}
-{#  #}
-{#  #}
-{#  #}
 {% endblock %}

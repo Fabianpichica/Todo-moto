@@ -12,7 +12,7 @@ from django.db.models import Sum, Q
 from django.contrib.auth.decorators import login_required
 from .models import Producto, Categoria, Perfil, Pedido, PedidoItem
 from inventario.models import MovimientoInventario
-
+from decimal import Decimal
 
 COLOMBIAN_CITIES = [
     'Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena',
@@ -255,10 +255,14 @@ def checkout(request):
         messages.warning(request, "Tu carrito está vacío. Añade productos para continuar.")
         return redirect('productos:lista_productos')
     
-    total_carrito = sum(item.get_total_item_price() for item in carrito_items)
+    subtotal = sum(item.get_total_item_price() for item in carrito_items)
+    iva = (subtotal * Decimal('0.19')).quantize(Decimal('0.01'))  # IVA del 19%
+    total_carrito = (subtotal + iva).quantize(Decimal('0.01'))
 
     context = {
         'carrito_items': carrito_items,
+        'subtotal': subtotal,
+        'iva': iva,
         'total_carrito': total_carrito,
         'ciudades': COLOMBIAN_CITIES,
         'first_name': request.user.first_name,

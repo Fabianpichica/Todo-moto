@@ -1,430 +1,692 @@
+ /* --- Variables CSS para el Admin --- */
+:root {
+    --primary-red: #c1c606; /* Tu color principal */
+    --dark-red: #9c9d15; /* Un tono más oscuro para hover/activo */
+    --light-gray: #f8f9fa;
+    --border-color: #dee2e6;
+    --text-color: #333;
+    --white-text: #fff;
 
-    :root {
-        --primary-red: #c1c606;
-        --dark-red: #c1c606;
-        --hover-red: #c1c606;
-        --light-gray: #f8f9fa;
-        --border-color: #dee2e6;
-        --text-color: #333;
-        --white-text: #fff;
+    /* Colores adicionales para tarjetas y badges */
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --secondary-color: #6c757d;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --dark-custom-color: #343a40; /* Para la tarjeta de inventario */
+}
+
+/* --- Estilos generales del cuerpo y el contenedor principal --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Evita el scroll horizontal */
+    background-color: var(--light-gray);
+    color: var(--text-color);
+}
+
+#wrapper { /* Contenedor principal para el layout de sidebar y contenido */
+    display: flex;
+    min-height: 100vh; /* Ocupa toda la altura de la vista */
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    transition: all 0.3s ease-in-out; /* Transición para el toggle */
+}
+
+/* Estilos del Sidebar */
+.sidebar-wrapper {
+    min-width: 250px;
+    max-width: 250px;
+    background-color: var(--primary-red);
+    color: var(--white-text);
+    transition: margin 0.25s ease-out;
+    flex-shrink: 0;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    position: relative; /* Para el toggle en móvil */
+    z-index: 1000; /* Asegura que esté por encima del contenido */
+}
+
+.sidebar-wrapper .sidebar-heading {
+    padding: 1.5rem 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    background-color: var(--dark-red);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-weight: bold;
+}
+
+.sidebar-wrapper .list-group {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar-wrapper .list-group-item {
+    display: flex; /* Para alinear icono y texto */
+    align-items: center;
+    background-color: var(--primary-red);
+    color: var(--white-text);
+    text-decoration: none;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-wrapper .list-group-item i {
+    margin-right: 10px;
+}
+
+.sidebar-wrapper .list-group-item.active {
+    background-color: var(--dark-red);
+    font-weight: bold;
+}
+
+.sidebar-wrapper .list-group-item:hover {
+    background-color: var(--dark-red); /* Tono ligeramente más oscuro para el hover */
+}
+
+.sidebar-wrapper .list-group-item.text-danger {
+    color: #ffcccc;
+}
+
+.sidebar-wrapper .list-group-item.text-danger:hover {
+    background-color: var(--dark-red);
+    color: var(--white-text);
+}
+
+/* Estilos del Contenido Principal */
+#page-content-wrapper {
+    width: 100%;
+    min-width: 0;
+    flex-grow: 1;
+    padding: 20px;
+    background-color: var(--light-gray);
+    transition: margin-left 0.25s ease-out; /* Transición para el toggle */
+}
+
+/* Estilos de la barra de navegación superior (Navbar) */
+.main-navbar {
+    background-color: var(--white-text);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.main-navbar .toggle-btn {
+    background-color: var(--primary-red);
+    color: var(--white-text);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.main-navbar .toggle-btn:hover {
+    background-color: var(--dark-red);
+}
+
+.main-navbar .user-info {
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+/* Contenedor de fluidos (similar a .container-fluid de Bootstrap) */
+.container-fluid-custom {
+    padding: 20px;
+}
+
+/* Estilos para los mensajes de Django */
+.messages-container {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.messages-container li {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 1px solid transparent;
+}
+
+.messages-container .alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+.messages-container .alert-info {
+    color: #055160;
+    background-color: #cff4fc;
+    border-color: #b6effb;
+}
+
+.messages-container .alert-warning {
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+.messages-container .alert-error { /* Django usa 'error' como tag */
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+/* Estilos para Títulos de Contenido */
+.content-title {
+    font-size: 2rem;
+    color: var(--text-color); /* Color de texto principal */
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.content-subtitle { /* Para subtítulos dentro de las páginas */
+    font-size: 1.5rem;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+/* Estilos para la cuadrícula de tarjetas (Dashboard Home) */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ajustado para más flexibilidad */
+    gap: 20px;
+}
+
+.dashboard-card {
+    background-color: var(--white-text);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease; /* Efecto hover */
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.dashboard-card.bg-primary-custom {
+    background-color: var(--primary-red);
+    color: var(--white-text);
+}
+
+.dashboard-card.bg-success-custom {
+    background-color: var(--success-color);
+    color: var(--white-text);
+}
+
+.dashboard-card.bg-info-custom {
+    background-color: var(--info-color);
+    color: var(--white-text);
+}
+
+.dashboard-card.bg-secondary-custom {
+    background-color: var(--secondary-color);
+    color: var(--white-text);
+}
+
+.dashboard-card.bg-warning-custom {
+    background-color: var(--warning-color);
+    color: var(--text-color); /* Texto oscuro para fondo amarillo */
+}
+
+.dashboard-card.bg-dark-custom {
+    background-color: var(--dark-custom-color);
+    color: var(--white-text);
+}
+
+
+.dashboard-card .card-body-custom {
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.dashboard-card .card-footer-custom {
+    background-color: rgba(0,0,0,0.1);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.dashboard-card .card-footer-custom a {
+    color: var(--white-text);
+    text-decoration: none;
+    font-weight: bold;
+    transition: text-decoration 0.2s ease;
+}
+
+.dashboard-card .card-footer-custom a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos de tabla (general para todas las tablas del admin) */
+.table-responsive {
+    overflow-x: auto;
+    margin-top: 20px;
+    border-radius: 8px; /* Bordes redondeados para el contenedor */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0; /* Elimina margen inferior para que el card lo maneje */
+    background-color: var(--white-text);
+}
+
+.table thead {
+    background-color: var(--dark-custom-color); /* Encabezado oscuro */
+    color: var(--white-text);
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table tbody tr:nth-of-type(even) {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Estilos de botones (general para el admin) */
+.btn-custom {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.btn-primary-custom {
+    background-color: var(--primary-red);
+    color: var(--white-text);
+    border-color: var(--primary-red);
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--dark-red);
+    border-color: var(--dark-red);
+}
+
+.btn-success-custom {
+    background-color: var(--success-color);
+    color: var(--white-text);
+    border-color: var(--success-color);
+}
+
+.btn-success-custom:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-info-custom {
+    background-color: var(--info-color);
+    color: var(--white-text);
+    border-color: var(--info-color);
+}
+
+.btn-info-custom:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+.btn-danger-custom {
+    background-color: var(--danger-color);
+    color: var(--white-text);
+    border-color: var(--danger-color);
+}
+
+.btn-danger-custom:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.btn-secondary-custom {
+    background-color: var(--secondary-color);
+    color: var(--white-text);
+    border-color: var(--secondary-color);
+}
+
+.btn-secondary-custom:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-sm-custom {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+}
+
+/* Botones de acción en tablas (Editar, Eliminar, Ver) */
+.btn-action-edit {
+    background-color: var(--warning-color);
+    color: var(--text-color);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.btn-action-edit:hover {
+    background-color: #e0a800;
+}
+
+.btn-action-delete {
+    background-color: var(--danger-color);
+    color: var(--white-text);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.btn-action-delete:hover {
+    background-color: #c82333;
+}
+
+.btn-action-view {
+    background-color: var(--info-color);
+    color: var(--white-text);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.btn-action-view:hover {
+    background-color: #138496;
+}
+
+/* Estilos de formularios (general para el admin) */
+.form-group-custom {
+    margin-bottom: 1rem;
+}
+
+.form-label-custom {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.form-control-custom,
+.form-select-custom,
+.form-textarea-custom {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    background-color: var(--white-text);
+    background-clip: padding-box;
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control-custom:focus,
+.form-select-custom:focus,
+.form-textarea-custom:focus {
+    border-color: var(--primary-red);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(193, 198, 6, 0.25); /* Sombra de enfoque con tu color */
+}
+
+.form-check-custom {
+    display: block;
+    min-height: 1.5rem;
+    padding-left: 1.5em;
+    margin-bottom: 0.125rem;
+}
+
+.form-check-input-custom {
+    float: left;
+    margin-left: -1.5em;
+}
+
+.form-check-label-custom {
+    margin-bottom: 0;
+}
+
+/* Estilos para imágenes de previsualización en formularios */
+.form-image-preview {
+    max-width: 150px;
+    height: auto;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Estilos para paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.page-item .page-link {
+    display: block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: var(--primary-red);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.page-item .page-link:hover {
+    background-color: var(--primary-red);
+    color: var(--white-text);
+}
+
+.page-item.active .page-link {
+    background-color: var(--primary-red);
+    color: var(--white-text);
+    border-color: var(--primary-red);
+}
+
+.page-item.disabled .page-link {
+    color: var(--secondary-color);
+    pointer-events: none;
+    background-color: var(--light-gray);
+    border-color: var(--border-color);
+}
+
+
+/* --- Media Queries para responsividad --- */
+
+/* Para pantallas pequeñas (móviles, hasta 767px) */
+@media (max-width: 767px) {
+    #wrapper {
+        flex-direction: column; /* Apila sidebar y contenido */
     }
-
-    /* Estilos generales del cuerpo y el contenedor principal */
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden; /* Evita el scroll horizontal */
-        background-color: var(--light-gray);
-        color: var(--text-color);
-    }
-
-    #wrapper { /* Contenedor principal para el layout de sidebar y contenido */
-        display: flex;
-        min-height: 100vh; /* Ocupa toda la altura de la vista */
-        width: 100%; /* Asegura que ocupe todo el ancho */
-    }
-
-    /* Estilos del Sidebar */
     .sidebar-wrapper {
-        min-width: 250px;
-        max-width: 250px;
-        background-color: #c1c606;
-        color: var(--white-text);
-        transition: margin 0.25s ease-out;
-        flex-shrink: 0; /* Evita que el sidebar se encoja */
-        box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* Sombra sutil a la derecha */
-    }
-
-    .sidebar-wrapper .sidebar-heading {
-        padding: 1.5rem 1rem;
-        font-size: 1.5rem;
-        text-align: center;
-        background-color: var(--dark-red);
+        min-width: 100%; /* Ocupa todo el ancho */
+        max-width: 100%;
+        height: auto; /* Altura adaptable */
+        position: static; /* No fijo en móvil */
+        box-shadow: none;
         border-bottom: 1px solid rgba(255,255,255,0.1);
-        font-weight: bold;
     }
-
-    .sidebar-wrapper .list-group {
-        list-style: none; /* Elimina los puntos de la lista */
-        padding: 0;
-        margin: 0;
-        width: 100%;
-    }
-
-    .sidebar-wrapper .list-group-item {
-        display: block; /* Para que el enlace ocupe todo el ancho */
-        background-color: var(--primary-red);
-        color: var(--white-text);
-        text-decoration: none; /* Elimina el subrayado */
-        padding: 15px 20px;
-        border-bottom: 1px solid rgba(255,255,255,0.05); /* Separador sutil */
-        transition: background-color 0.2s ease, color 0.2s ease;
-        display: flex; /* Para alinear icono y texto */
-        align-items: center;
-    }
-
-    .sidebar-wrapper .list-group-item i {
-        margin-right: 10px; /* Espacio entre icono y texto */
-    }
-
-    .sidebar-wrapper .list-group-item.active {
-        background-color: var(--dark-red); /* Tono más oscuro para el activo */
-        font-weight: bold;
-    }
-
-    .sidebar-wrapper .list-group-item:hover {
-        background-color: var(--hover-red); /* Tono ligeramente más oscuro para el hover */
-    }
-
-    .sidebar-wrapper .list-group-item.text-danger {
-        color: #ffcccc; /* Un rojo más claro para el texto de "Cerrar Sesión" */
-    }
-
-    .sidebar-wrapper .list-group-item.text-danger:hover {
-        background-color: var(--dark-red);
-        color: var(--white-text);
-    }
-
-
-    /* Estilos del Contenido Principal */
-    #page-content-wrapper {
-        width: 100%; /* Ocupa el resto del ancho disponible */
-        min-width: 0; /* Permite que el contenido se encoja */
-        flex-grow: 1; /* Toma el espacio restante */
-        padding: 20px;
-        background-color: var(--light-gray);
-    }
-
-    /* Estilos de la barra de navegación superior (Navbar) */
-    .main-navbar {
-        background-color: var(--white-text);
-        border-bottom: 1px solid var(--border-color);
-        padding: 15px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .main-navbar .toggle-btn {
-        background-color: var(--primary-red);
-        color: var(--white-text);
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
-
-    .main-navbar .toggle-btn:hover {
-        background-color: var(--dark-red);
-    }
-
-    .main-navbar .user-info {
-        color: var(--text-color);
-        font-weight: bold;
-    }
-
-    /* Contenedor de fluidos (similar a .container-fluid de Bootstrap) */
-    .container-fluid-custom {
-        padding: 20px;
-    }
-
-    /* Estilos para los mensajes de Django */
-    .messages-container {
-        list-style: none;
-        padding: 0;
-        margin-top: 20px;
-    }
-
-    .messages-container li {
+    .sidebar-wrapper .sidebar-heading {
+        font-size: 1.2rem; /* Título más pequeño */
         padding: 1rem;
-        margin-bottom: 1rem;
-        border-radius: 5px;
+    }
+    .sidebar-wrapper .list-group-item {
+        padding: 12px 15px; /* Menos padding */
+        font-size: 0.9rem;
+    }
+
+    #page-content-wrapper {
+        padding: 15px; /* Menos padding */
+        margin-left: 0 !important; /* Asegura que no haya margen izquierdo */
+    }
+    .main-navbar {
+        flex-direction: column; /* Apila elementos de la navbar */
+        align-items: flex-start;
+        padding: 10px 15px;
+    }
+    .main-navbar .toggle-btn {
+        margin-bottom: 10px;
+        width: 100%; /* Botón de toggle ancho completo */
+        text-align: center;
+    }
+    .main-navbar .user-info {
+        width: 100%;
+        text-align: center;
+    }
+
+    .content-title {
+        font-size: 1.8rem;
+    }
+    .content-subtitle {
+        font-size: 1.3rem;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr; /* Una columna en móviles */
+    }
+
+    /* Tablas responsive para móviles */
+    .table-responsive {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+    }
+    .table thead {
+        display: none; /* Oculta el encabezado en móviles */
+    }
+    .table tbody td {
+        display: block; /* Cada celda se convierte en un bloque */
+        text-align: right;
+        padding-left: 50%; /* Espacio para la pseudo-clase */
+        position: relative;
+    }
+    .table tbody td::before {
+        content: attr(data-label); /* Usa el atributo data-label para el encabezado */
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-left: 15px;
         font-weight: bold;
-        border: 1px solid transparent;
+        text-align: left;
     }
 
-    .messages-container .alert-success {
-        color: #0f5132;
-        background-color: #d1e7dd;
-        border-color: #badbcc;
+    /* Formularios responsive */
+    .form-control-custom,
+    .form-select-custom,
+    .form-textarea-custom {
+        padding: 0.5rem 0.75rem; /* Padding más compacto */
+        font-size: 0.9rem;
+    }
+    .btn-custom {
+        width: 100%; /* Botones de formulario ancho completo */
+        margin-bottom: 10px;
+    }
+    .btn-action-edit, .btn-action-delete, .btn-action-view {
+        width: 100%; /* Botones de acción ancho completo */
+        margin-bottom: 5px;
     }
 
-    .messages-container .alert-info {
-        color: #055160;
-        background-color: #cff4fc;
-        border-color: #b6effb;
+    /* Gráficos responsive */
+    .charts-grid {
+        grid-template-columns: 1fr; /* Una columna en móviles */
+    }
+    .chart-container {
+        padding: 15px;
+    }
+}
+
+/* Para pantallas medianas (tablets, 768px a 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .sidebar-wrapper {
+        min-width: 200px; /* Sidebar un poco más pequeño */
+        max-width: 200px;
+    }
+    .sidebar-wrapper .sidebar-heading {
+        font-size: 1.3rem;
+    }
+    .sidebar-wrapper .list-group-item {
+        padding: 12px 15px;
     }
 
-    .messages-container .alert-warning {
-        color: #664d03;
-        background-color: #fff3cd;
-        border-color: #ffecb5;
+    #page-content-wrapper {
+        padding: 20px;
+    }
+    .main-navbar {
+        padding: 15px 20px;
     }
 
-    .messages-container .alert-error { /* Django usa 'error' como tag */
-        color: #842029;
-        background-color: #f8d7da;
-        border-color: #f5c2c7;
-    }
-
-    /* Estilos para Títulos de Contenido */
     .content-title {
         font-size: 2rem;
-        color: var(--primary-red);
-        margin-bottom: 20px;
-        font-weight: bold;
+    }
+    .content-subtitle {
+        font-size: 1.5rem;
     }
 
-    /* Estilos para la cuadrícula de tarjetas (Dashboard Home) */
     .card-grid {
-        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 2-3 columnas */
+    }
+
+    .charts-grid {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
     }
+}
 
-    .dashboard-card {
-        background-color: var(--white-text);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+/* Para pantallas grandes (desktops, 992px en adelante) */
+@media (min-width: 992px) {
+    #wrapper.toggled .sidebar-wrapper {
+        margin-left: -250px; /* Oculta el sidebar en desktop */
     }
-
-    .dashboard-card.bg-primary-custom {
-        background-color: var(--primary-red);
-        color: var(--white-text);
+    #wrapper.toggled #page-content-wrapper {
+        margin-left: 0; /* Contenido ocupa todo el ancho */
     }
-
-    .dashboard-card.bg-success-custom {
-        background-color: #28a745; /* Verde de éxito */
-        color: var(--white-text);
-    }
-
-    .dashboard-card .card-body-custom {
-        padding: 20px;
-        font-size: 1.2rem;
-        font-weight: bold;
-    }
-
-    .dashboard-card .card-footer-custom {
-        background-color: rgba(0,0,0,0.1); /* Fondo más oscuro para el footer de la tarjeta */
-        padding: 15px 20px;
-        display: flex;
+    .main-navbar {
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        border-top: 1px solid rgba(255,255,255,0.1);
     }
-
-    .dashboard-card .card-footer-custom a {
-        color: var(--white-text);
-        text-decoration: none;
-        font-weight: bold;
-        transition: text-decoration 0.2s ease;
+    .main-navbar .toggle-btn {
+        width: auto;
     }
-
-    .dashboard-card .card-footer-custom a:hover {
-        text-decoration: underline;
+    .main-navbar .user-info {
+        width: auto;
+        text-align: right;
     }
-
-    /* Estilos de tabla */
-    .data-table-responsive {
-        overflow-x: auto; /* Permite desplazamiento horizontal en tablas grandes */
-        margin-top: 20px;
+    .card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
-
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 1rem;
-        background-color: var(--white-text);
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    .charts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     }
-
-    .data-table thead {
-        background-color: var(--primary-red);
-        color: var(--white-text);
-    }
-
-    .data-table th,
-    .data-table td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .data-table tbody tr:nth-of-type(even) {
-        background-color: #f2f2f2; /* Rayado para filas pares */
-    }
-
-    .data-table tbody tr:hover {
-        background-color: #e9ecef; /* Resaltado al pasar el ratón */
-    }
-
-    /* Estilos de botones */
-    .btn-custom {
-        display: inline-flex;
-        align-items: center;
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-        border: 1px solid transparent;
-    }
-
-    .btn-primary-custom {
-        background-color: var(--primary-red);
-        color: var(--white-text);
-        border-color: var(--primary-red);
-    }
-
-    .btn-primary-custom:hover {
-        background-color: var(--dark-red);
-        border-color: var(--dark-red);
-    }
-
-    .btn-success-custom {
-        background-color: #28a745;
-        color: var(--white-text);
-        border-color: #28a745;
-    }
-
-    .btn-success-custom:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
-    }
-
-    .btn-info-custom {
-        background-color: #17a2b8;
-        color: var(--white-text);
-        border-color: #17a2b8;
-    }
-
-    .btn-info-custom:hover {
-        background-color: #138496;
-        border-color: #117a8b;
-    }
-
-    .btn-danger-custom {
-        background-color: #dc3545;
-        color: var(--white-text);
-        border-color: #dc3545;
-    }
-
-    .btn-danger-custom:hover {
-        background-color: #c82333;
-        border-color: #bd2130;
-    }
-
-    .btn-secondary-custom {
-        background-color: #6c757d;
-        color: var(--white-text);
-        border-color: #6c757d;
-    }
-
-    .btn-secondary-custom:hover {
-        background-color: #5a6268;
-        border-color: #545b62;
-    }
-
-    .btn-sm-custom {
-        padding: 5px 10px;
-        font-size: 0.875rem;
-    }
-
-    /* Estilos de formularios */
-    .form-group-custom {
-        margin-bottom: 1rem;
-    }
-
-    .form-label-custom {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-        color: var(--text-color);
-    }
-
-    .form-control-custom {
-        display: block;
-        width: 100%;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        color: var(--text-color);
-        background-color: var(--white-text);
-        background-clip: padding-box;
-        border: 1px solid var(--border-color);
-        border-radius: 0.25rem;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-
-    .form-control-custom:focus {
-        border-color: var(--primary-red);
-        outline: 0;
-        box-shadow: 0 0 0 0.25rem rgba(163, 8, 60, 0.25); /* Sombra de enfoque con tu color */
-    }
-
-    .form-check-custom {
-        display: block;
-        min-height: 1.5rem;
-        padding-left: 1.5em;
-        margin-bottom: 0.125rem;
-    }
-
-    .form-check-input-custom {
-        float: left;
-        margin-left: -1.5em;
-    }
-
-    .form-check-label-custom {
-        margin-bottom: 0;
-    }
-
-    /* Estilos para imágenes de previsualización en formularios */
-    .form-image-preview {
-        max-width: 150px;
-        height: auto;
-        border-radius: 5px;
-        margin-top: 10px;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    /* Media Queries para responsividad */
-    @media (max-width: 768px) {
-        .sidebar-wrapper {
-            margin-left: -250px; /* Oculta el sidebar por defecto en móviles */
-            position: fixed;
-            height: 100vh;
-            z-index: 1000; /* Asegura que esté por encima del contenido */
-        }
-        #wrapper.toggled .sidebar-wrapper {
-            margin-left: 0; /* Muestra el sidebar cuando se "togglea" */
-        }
-        #page-content-wrapper {
-            margin-left: 0; /* Asegura que el contenido ocupe todo el ancho */
-        }
-        #wrapper.toggled #page-content-wrapper {
-            margin-left: 250px; /* Mueve el contenido para dejar espacio al sidebar */
-        }
-        .main-navbar {
-            justify-content: center; /* Centra el botón de toggle */
-        }
-        .main-navbar .user-info {
-            display: none; /* Oculta la info del usuario en pantallas pequeñas */
-        }
-        .card-grid {
-            grid-template-columns: 1fr; /* Una columna en móviles */
-        }
-    }
-    
+}
