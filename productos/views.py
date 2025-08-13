@@ -13,6 +13,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Producto, Categoria, Perfil, Pedido, PedidoItem
 from inventario.models import MovimientoInventario
 from decimal import Decimal
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
 
 COLOMBIAN_CITIES = [
     'Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena',
@@ -246,15 +249,21 @@ def get_cart_total_items(request):
 
 
 
-@login_required
 def checkout(request):
-    # Solo usuarios logueados pueden hacer checkout
-    carrito_items = CarritoItem.objects.filter(usuario=request.user).select_related('producto')
-    
+    identifier = _get_or_create_cart_identifier(request)
+    if identifier['usuario']:
+        carrito_items = CarritoItem.objects.filter(usuario=identifier['usuario']).select_related('producto')
+        first_name = identifier['usuario'].first_name
+        last_name = identifier['usuario'].last_name
+        email = identifier['usuario'].email
+    else:
+        carrito_items = CarritoItem.objects.filter(session_key=identifier['session_key']).select_related('producto')
+        first_name = last_name = email = ''
+
     if not carrito_items.exists():
         messages.warning(request, "Tu carrito está vacío. Añade productos para continuar.")
         return redirect('productos:lista_productos')
-    
+
     subtotal = sum(item.get_total_item_price() for item in carrito_items)
     iva = (subtotal * Decimal('0.19')).quantize(Decimal('0.01'))  # IVA del 19%
     total_carrito = (subtotal + iva).quantize(Decimal('0.01'))
@@ -265,82 +274,100 @@ def checkout(request):
         'iva': iva,
         'total_carrito': total_carrito,
         'ciudades': COLOMBIAN_CITIES,
-        'first_name': request.user.first_name,
-        'last_name': request.user.last_name,
-        'email': request.user.email,
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email,
     }
     return render(request, 'productos/checkout.html', context)
 
 
-@login_required
 def process_checkout(request):
     if request.method == 'POST':
+        identifier = _get_or_create_cart_identifier(request)
+        if identifier['usuario']:
+            carrito_items = CarritoItem.objects.filter(usuario=identifier['usuario']).select_related('producto')
+            nombre_completo = request.POST.get('nombre_completo', '').strip()
+            email = request.POST.get('email', '').strip()
+            direccion = request.POST.get('direccion', '').strip()
+            ciudad = request.POST.get('ciudad', '').strip()
+            metodo_pago = request.POST.get('metodo_pago', '').strip()
+            telefono = ''
+            tipo_documento = ''
+            numero_documento = ''
+        else:
+            carrito_items = CarritoItem.objects.filter(session_key=identifier['session_key']).select_related('producto')
+            nombre_completo = request.POST.get('nombre_completo', '').strip()
+            email = request.POST.get('email', '').strip()
+            telefono = request.POST.get('telefono', '').strip()
+            tipo_documento = request.POST.get('tipo_documento', '').strip()
+            numero_documento = request.POST.get('numero_documento', '').strip()
+            direccion = request.POST.get('direccion', '').strip()
+            ciudad = request.POST.get('ciudad', '').strip()
+            metodo_pago = request.POST.get('metodo_pago', '').strip()
+        total_pedido = sum(item.get_total_item_price() for item in carrito_items)
+        # Validar email de usuario anónimo
+        if not identifier['usuario']:
+            from django.core.validators import validate_email
+            from django.core.exceptions import ValidationError
+            try:
+                validate_email(email)
+            except ValidationError:
+                messages.error(request, "El correo electrónico ingresado no es válido.")
+                return redirect('productos:checkout')
         try:
             with transaction.atomic():
-                # 1. Obtener los ítems del carrito del usuario logueado
-                carrito_items = CarritoItem.objects.filter(usuario=request.user).select_related('producto')
-                
-                if not carrito_items.exists():
-                    messages.error(request, "Tu carrito está vacío.")
-                    return redirect('productos:lista_productos')
-
-                # 2. Recopilar la información del formulario
-                nombre_completo = request.POST.get('nombre_completo')
-                direccion = request.POST.get('direccion')
-                ciudad = request.POST.get('ciudad')
-                metodo_pago = request.POST.get('metodo_pago')
-
-                # 3. Validar el formulario
-                if not all([nombre_completo, direccion, ciudad, metodo_pago]):
-                    messages.error(request, "Por favor, completa todos los campos del formulario.")
-                    return redirect('productos:checkout')
-                
-                # 4. Crear un nuevo Pedido
-                total_pedido = sum(item.get_total_item_price() for item in carrito_items)
-                nuevo_pedido = Pedido.objects.create(
-                    usuario=request.user,
+                pedido = Pedido.objects.create(
+                    usuario=identifier['usuario'],
                     nombre=nombre_completo,
                     direccion=direccion,
                     ciudad=ciudad,
                     total_pedido=total_pedido,
-                    estado='Pendiente' # Estado inicial
                 )
-
-                # 5. Mover los CarritoItems a PedidoItems y limpiar el carrito
                 for item in carrito_items:
                     PedidoItem.objects.create(
-                        pedido=nuevo_pedido,
+                        pedido=pedido,
                         producto=item.producto,
                         cantidad=item.cantidad,
                         precio_unitario=item.producto.precio
                     )
-                    # Opcional: Reducir el stock del producto
-                    # item.producto.stock -= item.cantidad
-                    # item.producto.save()
-                
-                carrito_items.delete() # Limpiar el carrito del usuario
-
-                # 6. SIMULACIÓN DE PAGO
-                # --- AQUÍ ES DONDE IRÍA LA LÓGICA DE LA PASARELA DE PAGO REAL ---
-                # Por ahora, solo guardamos el pedido y mostramos un mensaje.
-                
-                messages.success(request, f"¡Tu pedido #{nuevo_pedido.pk} ha sido creado con éxito! Método de pago: {metodo_pago}. El pago está pendiente de confirmación.")
-                return redirect('productos:lista_productos')
-
+                carrito_items.delete()
+                # Enviar correo de confirmación/factura al usuario anónimo
+                if not identifier['usuario']:
+                    subject = 'Factura de tu compra en MotoGM'
+                    factura_html = render_to_string('productos/email_factura.html', {
+                        'pedido': pedido,
+                        'pedido_items': pedido.items.all(),
+                        'nombre': nombre_completo,
+                        'email': email,
+                        'telefono': telefono,
+                        'tipo_documento': tipo_documento,
+                        'numero_documento': numero_documento,
+                        'direccion': direccion,
+                        'ciudad': ciudad,
+                        'metodo_pago': metodo_pago,
+                        'total_pedido': total_pedido,
+                    })
+                    send_mail(
+                        subject,
+                        '',
+                        settings.DEFAULT_FROM_EMAIL,
+                        [email],
+                        html_message=factura_html,
+                        fail_silently=False
+                    )
+            messages.success(request, "¡Tu pedido ha sido procesado correctamente!")
+            return redirect('productos:lista_productos')
         except Exception as e:
-            messages.error(request, f"Ocurrió un error al procesar tu pedido: {str(e)}")
+            messages.error(request, f"Ocurrió un error al procesar el pedido: {str(e)}")
             return redirect('productos:checkout')
-    
-    messages.error(request, "Método de solicitud no permitido.")
-    return redirect('productos:checkout')
+    else:
+        return redirect('productos:checkout')
 
 
-
-@login_required
 def mis_pedidos(request):
-    """
-    Vista que muestra todos los pedidos del usuario actual.
-    """
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para ver tus pedidos.")
+        return redirect('core:login')
     pedidos = Pedido.objects.filter(usuario=request.user).order_by('-fecha_creacion')
     context = {
         'pedidos': pedidos
@@ -348,9 +375,10 @@ def mis_pedidos(request):
     return render(request, 'productos/mis_pedidos.html', context)
 
 
-
-@login_required
 def mi_cuenta(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para acceder a tu cuenta.")
+        return redirect('core:login')
     perfil, created = Perfil.objects.get_or_create(user=request.user)
     
     if request.method == 'POST':
@@ -384,7 +412,6 @@ def mi_cuenta(request):
     return render(request, 'productos/mi_cuenta.html', context)
 
 
-@login_required
 def checkout_view(request):
     if request.method == 'POST':
         carrito = request.session.get('carrito', {})
