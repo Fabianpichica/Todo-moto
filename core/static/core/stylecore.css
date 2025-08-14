@@ -1,5 +1,5 @@
-/* --- Estilos para el contenedor principal de contenido (del base.html) --- */
 
+/* --- Estilos para el contenedor principal de contenido (del base.html) --- */
 .main-content {
 display: flex;
 flex-direction: column;
@@ -60,16 +60,16 @@ color: white;
 
 
 .banner-content {
-display: flex;
-justify-content: space-between;
-align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; 
 
 }
 
 
 
 .banner-logo{
-margin-right: 1500px; /* Ajusta este valor según sea necesario para alinear el logo a la izquierda */
+margin: 0 20px 0 0;
 }
 
 .banner-logo img {
@@ -227,7 +227,7 @@ margin-bottom: 15px;
 padding: 12px 16px;
 border: none;
 border-radius: 12px;
-background-color: #181818;;
+background-color: #9c9d15;
 color: white;
 font-size: 16px;
 
@@ -236,7 +236,7 @@ font-size: 16px;
 
 
 .hero-login form button {
-background-color: #000;
+background-color:#9c9d15;
 border: none;
 padding: 12px;
 width: 100%;
@@ -258,7 +258,7 @@ cursor: pointer;
 
 .container1{
 
-background-image: url('/static/core/img/colorbanner.png');
+background: linear-gradient(to right, #1a1a1a, #9c9d15, #dce10a);
 
 background-size: cover; /* Ajusta la imagen para que cubra todo el contenedor */
 
@@ -335,45 +335,82 @@ position: relative; /* Necesario para que los botones se posicionen dentro */
 
 
 
-/* Estilos para el carrusel */
 
-#carouselExampleControls, #carouselExampleIndicators { /* Usa el ID de tu carrusel */
 
-margin-top: 20px; /* Un poco de margen superior, si lo necesitas */
 
-margin-bottom: 20px; /* Un poco de margen inferior */
-
-width: 80%; /* Ancho del carrusel, por ejemplo 80% del contenedor padre */
-
-max-width: 1000px; /* Un ancho máximo para pantallas grandes */
-
-margin-left: auto; /* Centrar horizontalmente */
-
-margin-right: auto; /* Centrar horizontalmente */
-
-overflow: hidden; /* Asegura que el contenido no se salga */
-
-border-radius: 8px; /* Bordes ligeramente redondeados, opcional */
-
-box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Una sombra sutil, opcional */
-
+.containercategory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 40px 20px;
+    background-color: white;
 }
 
-
-
-.carousel-item img {
-
-height: 400px; /* Altura fija para todas las imágenes del carrusel */
-
-object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
-
-/* Si las imágenes se ven estiradas o cortadas, prueba: */
-
-/* object-fit: contain; (la imagen se ajusta manteniendo la relación de aspecto) */
-
-/* object-fit: fill; (la imagen se estira para llenar) */
-
+/* Logo centrado */
+.logocategoryaprove img {
+    max-width: 350px;
+    height: auto;
 }
+
+/* Botones amarillos (ahora <a> en vez de <button>) */
+.categorybuttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.categorybuttons .btn-category {
+    background-color: #c1c606;
+    color: black;
+    font-weight: bold;
+    padding: 12px 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    font-size: 1.2em;
+    text-decoration: none; /* quitar subrayado */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.categorybuttons .btn-category:hover {
+    background-color: #f5db00;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Tarjetas de categoría (ahora <a> en vez de <div>) */
+.category-cards {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.category-card {
+    display: block;
+    background: linear-gradient(to top, #c1c606, white);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none; /* quitar subrayado */
+}
+
+.category-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
 
 
 
@@ -576,34 +613,31 @@ display: block;
 }
 
 .registercontainer button {
-
-width: 100%;
-
-padding: 12px;
-
-background-color: #a3083c !important;
-
-color: white;
-
-border: none;
-
-border-radius: 5px;
-
-cursor: pointer;
-
-font-size: 1.1em;
-
-margin-top: 20px;
-
-transition: background-color 0.3s ease;
-
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #dce10a !important;
+    color: #efe8e8; /* Texto negro para mejor contraste */
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .registercontainer button:hover {
-
-background-color: #a3083c;
-
+    background-color: #c3c707; /* Un tono más oscuro en hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
+
+.registercontainer button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
 
 .login-link {
 
@@ -615,7 +649,7 @@ font-size: 0.9em;
 
 .login-link a {
 
-color: #a3083c;
+color:  #dce10a;
 
 text-decoration: none;
 
@@ -624,7 +658,7 @@ text-decoration: none;
 
 .principal-link a{
 
-color: #a3083c;
+color:  #dce10a;
 
 text-decoration: none;
 
@@ -658,13 +692,37 @@ margin: auto;
 
 }
 
+.login-container button {
+    background-color: #dce10a;
+    color: #efebeb; /* Texto negro para buen contraste */
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    width: 100%; /* Que ocupe todo el ancho del form */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-container button:hover {
+    background-color: #c3c707; /* Un tono más oscuro en hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* Ligero efecto de elevación */
+}
+
+.login-container button:active {
+    transform: translateY(0); /* Vuelve a su lugar al hacer click */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
 
 
 
 
 .register-link a{
 
-color: #a3083c;
+color:  #dce10a;
 
 text-decoration: none;
 
@@ -678,25 +736,13 @@ text-decoration: none;
 
 
 
-
-
-
-
-
-
 /* estilos para mi footer*/
-
-
-
 /* --- FOOTER --- */
-
 /* Contenedor principal del footer, aquí aplicamos el color de fondo y el borde */
 
 .main-footer {
 
-background-image: url('/static/core/img/colorbanner.png');
-
-background-color: #000;
+background: linear-gradient(to right, #1a1a1a, #9c9d15, #dce10a);
 
 border-top: 2px solid #000; /* Borde superior del mismo color, para consistencia */
 
@@ -714,7 +760,14 @@ background-size: cover; /* O "contain" o un valor específico como "100% auto" *
 
 background-repeat: no-repeat; /* Evita que se repita */
 
-background-position: left; /* Centra la imagen */ /* Color de texto por defecto para todo el footer */
+background-position: left; 
+
+width: 100%;        /* Asegura que abarque todo el ancho */
+margin: 0;          /* Elimina márgenes que puedan reducir el ancho */
+left: 0;            /* Alinea al borde izquierdo */
+box-sizing: content-box;
+
+/* Centra la imagen */ /* Color de texto por defecto para todo el footer */
 
 }
 
@@ -737,6 +790,8 @@ height: 100%;
 background: rgba(0, 0, 0, 0.1); /* Negro con 10% de opacidad */
 
 z-index: 0;
+
+pointer-events: none;
 
 }
 
@@ -1011,17 +1066,7 @@ color: #f0f0f0; /* Texto en un blanco suave */
     color: #000;
     text-decoration: none;
 }
-
-.table td a:hover {
-    text-decoration: underline;
-}
-
-/* Inputs de cantidad */
-.table input[type="number"] {
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    padding: 5px;
-}
+/* Eliminar bloque .main-footer::before para evitar que una capa invisible bloquee los clics en el contenido */
 
 /* Botones pequeños: actualizar y eliminar */
 .btn-outline-secondary {
@@ -1153,10 +1198,23 @@ color: #f0f0f0; /* Texto en un blanco suave */
     text-align: center;
   }
 
-  .banner-logo {
-    margin-right: 0;
-    margin-bottom: 20px;
-  }
+/* En pantallas medianas y pequeñas */
+@media (max-width: 1200px) {
+    .banner-logo {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .banner-logo img {
+        height: 180px; /* Reduce tamaño proporcional */
+    }
+}
+
+@media (max-width: 768px) {
+    .banner-logo img {
+        height: 120px; /* Más pequeño en móviles */
+    }
+}
 
   .banner-buttons {
     position: static;
