@@ -28,6 +28,9 @@
             {% endif %}
             <button type="submit" >Iniciar Sesión</button>
         </form>
+        <p class="password-reset-link">
+            <a href="{% url 'password_reset' %}" style="color:#c3c707;">¿Olvidaste tu contraseña?</a>
+        </p>
         <p class="register-link">¿No tienes una cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
     </div>
 {% endblock content %}

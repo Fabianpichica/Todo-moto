@@ -144,3 +144,6 @@ LOGOUT_REDIRECT_URL = '/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Email backend para pruebas locales
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
