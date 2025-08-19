@@ -1,4 +1,4 @@
-    {% load static %}
+{% load static %}
     <!DOCTYPE html>
     <html lang="es">
     <head>
@@ -27,6 +27,9 @@
                     <a href="{% url 'dashboard_admin:producto_list' %}" class="list-group-item {% if 'producto' in request.resolver_match.url_name %}active{% endif %}">
                         <i class="fas fa-box-open"></i> Gestión de Productos
                     </a>
+                    <a href="{% url 'inventario:historial_movimientos' %}" class="list-group-item {% if 'inventario' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fas fa-warehouse"></i> Gestión de Inventario
+                    </a>
                     <a href="{% url 'dashboard_admin:categoria_list' %}" class="list-group-item {% if 'categoria' in request.resolver_match.url_name %}active{% endif %}">
                         <i class="fas fa-tags"></i> Gestión de Categorías
                     </a>
@@ -46,9 +49,7 @@
                     </a>
 
 
-                    <a href="{% url 'admin:index' %}" class="list-group-item">
-                        <i class="fas fa-cogs"></i> Admin Django
-                    </a>
+
                     <a href="{% url 'logout' %}" class="list-group-item text-danger">
                         <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                     </a>
@@ -92,4 +93,3 @@
         </script>
     </body>
     </html>
-    

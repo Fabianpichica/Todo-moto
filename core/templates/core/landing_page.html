@@ -12,8 +12,8 @@
         {# Cuadro de botones - SIEMPRE VISIBLE #}
         <div class="hero-box hero-buttons">
           <a href="{% url 'productos:lista_productos' %}" class="btn-hero">PRODUCTOS</a>
-          <a href="#nosotros" class="btn-hero">NOSOTROS</a>
-          <a href="#contacto" class="btn-hero">CONTACTO</a>
+          <a href="{% url 'nosotros' %}" class="btn-hero">NOSOTROS</a>
+          <a href="{% url 'contacto' %}" class="btn-hero">CONTACTO</a>
         </div>
 
         {# Cuadro de login - SOLO VISIBLE SI EL USUARIO NO ESTÁ AUTENTICADO #}
@@ -51,7 +51,7 @@
     <a href="{% url 'productos:lista_productos_by_category' 2 %}" class="category-card">
         <img src="{% static 'core/img/luces.png' %}" alt="Accesorios">
     </a>
-    <a href="{% url 'productos:lista_productos_by_category' 3 %}" class="category-card">
+    <a href="{% url 'productos:lista_productos_by_category' 5 %}" class="category-card">
         <img src="{% static 'core/img/chaqueta.png' %}" alt="Chaqueta">
     </a>
 </div>

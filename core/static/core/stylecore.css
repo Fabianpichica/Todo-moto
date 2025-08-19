@@ -98,154 +98,118 @@ justify-content: center;
 }
 
 
-
 .hero-overlay {
-background-color: rgba(0, 0, 0, 0.4); /* transparencia negra */
-width: 100%;
-height: 100%;
-display: flex;
-align-items: center;
-justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4); /* transparencia negra */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-
 
 .hero-content {
-color: white;
-text-align: center;
-padding: 2rem;
-
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  justify-content: center; /* los centra */
+  align-items: center;
+  max-width: 1400px; /* más ancho */
+  margin: 0 auto;
+  height: 80vh; /* Centrado vertical */
+  gap: 80px; /* más separación entre cuadros */
 }
 
-
-
-.hero-content h1 {
-font-size: 48px;
-margin-bottom: 10px;
-font-family: 'TuFuente', sans-serif;
-}
-
-
-
-.hero-content p {
-font-size: 20px;
-}
-
-/* cuadros de login y y opciones de productos sobre la imagen*/
-
-.hero-content {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 40px;
-max-width: 1200px;
-margin: 0 auto;
-height: 80vh; /* Centrado vertical */
-gap: 60px;
-
-}
-
-
-
-/* Este es el contenedor que separa los cuadros */
-
+/* Contenedor general */
 .login-hero-wrapper {
-display: flex;
-justify-content: space-between;
-align-items: flex-start;
-gap: 60px;
-max-width: 1200px;
-width: 100%;
-padding: 40px;
-box-sizing: border-box;
-
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 80px; /* más separación */
+  max-width: 1400px;
+  width: 100%;
+  padding: 40px;
+  box-sizing: border-box;
 }
-
-
 
 .hero-box {
-background-color: #c1c606 ;
-padding: 40px 30px;
-border-radius: 25px;
-color: white;
-box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-
+  background-color: #c1c606;
+  padding: 50px 40px;  /* más grande */
+  min-width: 340px;   /* ancho mínimo mayor */
+  min-height: 280px;  /* alto mínimo mayor */
+  color: white;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
 }
-
-
 
 /* CUADRO DE BOTONES */
-
 .hero-buttons {
-flex: 1;
-max-width: 400px;
+  flex: 1;
+  max-width: 450px;
+  border-radius: 0 40px 40px 0; /* redondo a la izquierda */
 }
-
-
 
 .hero-buttons a {
-display: block;
-margin: 20px 0;
-padding: 18px 0;
-background-color: #9c9d15;
-color: white;
-text-decoration: none;
-border-radius: 15px;
-font-weight: bold;
-font-size: 18px;
-text-align: center;
-
+  display: block;
+  margin: 20px 0;
+  padding: 20px 0;
+  background-color: #9c9d15;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  transition: all 0.3s ease;
 }
 
-
+.hero-buttons a:hover {
+  background-color: #6f7010;
+  transform: scale(1.05);
+}
 
 /* CUADRO DE LOGIN */
-
 .hero-login {
-flex: 1;
-max-width: 90%; /* aumenta el ancho máximo */
-background-color: #c1c606;
-margin-left: auto; /* empuja hacia la derecha */
-margin-right: 20px; /* ajusta la separación del borde derecho */
-padding: 20px; /* opcional: da espacio interno */
-
+  flex: 1;
+  max-width: 500px;
+  background-color: #c1c606;
+  margin-left: auto;
+  margin-right: 20px;
+  padding: 30px;
+  border-radius: 40px 40px 40px 40px; /* redondo a la derecha */
 }
-
-
 
 .hero-login h2 {
-font-size: 28px;
-margin-bottom: 20px;
-
+  font-size: 28px;
+  margin-bottom: 20px;
 }
-
-
 
 .hero-login form input {
-width: 100%;
-margin-bottom: 15px;
-padding: 12px 16px;
-border: none;
-border-radius: 12px;
-background-color: #9c9d15;
-color: white;
-font-size: 16px;
-
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 12px;
+  background-color: #9c9d15;
+  color: white;
+  font-size: 16px;
 }
 
-
-
 .hero-login form button {
-background-color:#9c9d15;
-border: none;
-padding: 12px;
-width: 100%;
-border-radius: 12px;
-color: white;
-font-weight: bold;
-font-size: 16px;
-cursor: pointer;
+  background-color: #9c9d15;
+  border: none;
+  padding: 14px;
+  width: 100%;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
+.hero-login form button:hover {
+  background-color: #6f7010;
+  transform: scale(1.05);
 }
 
 

@@ -66,3 +66,9 @@ def detalle_producto(request, pk):
             'producto': producto
         }
         return render(request, 'productos/detalle_producto.html', context)
+
+def nosotros(request):
+    return render(request, 'core/nosotros.html')
+
+def contacto(request):
+    return render(request, 'core/contacto.html')
