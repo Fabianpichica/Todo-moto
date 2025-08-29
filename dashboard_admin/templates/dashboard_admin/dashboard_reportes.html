@@ -66,32 +66,37 @@
     <h1 class="content-title">Panel de Reportes y Análisis</h1>
     <p>Revisa las métricas clave del rendimiento de tu tienda.</p>
 
-    <div class="reportes-grid">
-        <div class="reporte-card bg-info-custom">
-            <div class="icon"><i class="fas fa-receipt"></i></div>
-            <div class="value">{{ total_pedidos }}</div>
-            <div class="title">Total de Pedidos</div>
-        </div>
-        <div class="reporte-card bg-primary-custom">
-            <div class="icon"><i class="fas fa-dollar-sign"></i></div>
-            <div class="value">${{ total_ingresos|floatformat:2 }}</div>
-            <div class="title">Ingresos Totales</div>
-        </div>
-        <div class="reporte-card bg-success-custom">
-            <div class="icon"><i class="fas fa-users"></i></div>
-            <div class="value">{{ total_clientes }}</div>
-            <div class="title">Clientes Registrados</div>
-        </div>
-    </div>
+    <div class="admin-card-unificado">
+        <div class="admin-card-title">Reportes y Análisis</div>
+        <div class="table-responsive">
+            <div class="reportes-grid">
+                <div class="reporte-card bg-info-custom">
+                    <div class="icon"><i class="fas fa-receipt"></i></div>
+                    <div class="value">{{ total_pedidos }}</div>
+                    <div class="title">Total de Pedidos</div>
+                </div>
+                <div class="reporte-card bg-primary-custom">
+                    <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="value">${{ total_ingresos|floatformat:2 }}</div>
+                    <div class="title">Ingresos Totales</div>
+                </div>
+                <div class="reporte-card bg-success-custom">
+                    <div class="icon"><i class="fas fa-users"></i></div>
+                    <div class="value">{{ total_clientes }}</div>
+                    <div class="title">Clientes Registrados</div>
+                </div>
+            </div>
 
-    <div class="charts-grid">
-        <div class="chart-container">
-            <h3>Ventas Mensuales</h3>
-            <canvas id="ventasChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3>Top 5 Productos Más Vendidos</h3>
-            <canvas id="productosChart"></canvas>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>Ventas Mensuales</h3>
+                    <canvas id="ventasChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Top 5 Productos Más Vendidos</h3>
+                    <canvas id="productosChart"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 </div>

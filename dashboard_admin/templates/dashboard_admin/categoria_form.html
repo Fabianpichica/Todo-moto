@@ -1,4 +1,4 @@
- {% extends 'dashboard_admin/dashboard_base.html' %}
+{% extends 'dashboard_admin/dashboard_base.html' %}
 
     {% block title %}
         {% if action == 'update' %}Editar Categoría{% else %}Crear Categoría{% endif %}
@@ -26,6 +26,11 @@
                 </div>
             {% endfor %}
 
+            <div class="form-group-custom">
+                <label for="id_activa" class="form-label-custom">¿Activa?</label>
+                {{ form.activa }}
+            </div>
+
             {# Errores no relacionados con campos específicos #}
             {% if form.non_field_errors %}
                 <div class="messages-container">
@@ -43,6 +48,7 @@
             <a href="{% url 'dashboard_admin:categoria_list' %}" class="btn-custom btn-secondary-custom ms-2">
                 <i class="fas fa-times-circle me-2"></i> Cancelar
             </a>
+            
+            {# Botón eliminar removido para evitar eliminación de categorías #}
         </form>
     {% endblock %}
-    

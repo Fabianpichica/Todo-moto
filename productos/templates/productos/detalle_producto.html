@@ -1,40 +1,116 @@
+{# productos/templates/productos/detalle_producto.html #}
+{% extends 'core/base.html' %} 
+{% load static %}
 
-    {# productos/templates/productos/detalle_producto.html #}
-    {% extends 'core/base.html' %} 
-    {% load static %}
+{% block title %}Detalle de Producto - {{ producto.nombre }}{% endblock %}
 
-    {% block title %}Detalle de Producto - {{ producto.nombre }}{% endblock %}
-
-    {% block content %}
-    <div class="main-content">
-        <div class="product-detail-container">
-            <div class="product-image-detail">
-                {% if producto.imagen %}
-                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
-                {% else %}
-                    <img src="https://via.placeholder.com/600x400?text=Sin+Imagen" alt="Producto sin imagen">
+{% block content %}
+<div class="main-content">
+    <div class="product-detail-container">
+        <div class="product-image-detail">
+            {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+            {% else %}
+                <img src="https://via.placeholder.com/600x400?text=Sin+Imagen" alt="Producto sin imagen">
+            {% endif %}
+        </div>
+        <div class="product-info-detail">
+            <h1 style="display:flex; align-items:center; gap:10px;">
+                {{ producto.nombre }}
+                {% if user.is_authenticated %}
+                    <form action="{% url 'productos:toggle_favorito' producto.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background:none; border:none; cursor:pointer;">
+                            {% if es_favorito %}
+                                <span style="color:#e74c3c; font-size:1.5em;">&#10084;</span>
+                            {% else %}
+                                <span style="color:#bbb; font-size:1.5em;">&#9825;</span>
+                            {% endif %}
+                        </button>
+                    </form>
                 {% endif %}
-            </div>
-            <div class="product-info-detail">
-                <h1>{{ producto.nombre }}</h1>
-                <p class="product-price-detail">Precio: ${{ producto.precio }}</p>
-                <p class="product-description-detail">{{ producto.descripcion }}</p>
-                <p class="product-stock-detail">Stock disponible: {{ producto.stock }}</p>
-                <p class="product-category-detail">Categoría: {{ producto.categoria.nombre|default:"Sin categoría" }}</p>
+            </h1>
+            <p class="product-price-detail">Precio: ${{ producto.precio }}</p>
+            <p class="product-description-detail">{{ producto.descripcion }}</p>
+            <p class="product-stock-detail">Stock disponible: {{ producto.stock }}</p>
+            <p class="product-category-detail">Categoría: {{ producto.categoria.nombre|default:"Sin categoría" }}</p>
 
-                {# Formulario de añadir al carrito con soporte AJAX #}
-                {# Asegúrate de que esta clase 'add-to-cart-form' esté presente #}
-                <form class="add-to-cart-form" data-product-id="{{ producto.pk }}" action="{% url 'productos:add_to_cart' producto.pk %}" method="post">
-                    {% csrf_token %}
-                    <div class="quantity-selector">
-                        <label for="cantidad">Cantidad:</label>
-                        <input type="number" id="cantidad" name="cantidad" value="1" min="1" max="{{ producto.stock }}" class="quantity-input">
-                    </div>
-                    <button type="submit" class="btn-add-to-cart">Añadir al Carrito</button>
-                </form>
-                <a href="{% url 'productos:lista_productos' %}" class="btn-back-to-list">Volver a la lista de productos</a>
+            <!-- Valoración promedio y número de valoraciones -->
+            <div style="margin: 18px 0 10px 0;">
+                <span style="font-size:1.3em; color:gold;">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= promedio_estrellas|floatformat:0 %}
+                            &#9733;
+                        {% else %}
+                            <span style="color:#ccc;">&#9733;</span>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+                <span style="font-size:1em; color:#555;">({{ valoraciones|length }} valoraciones)</span>
             </div>
+
+            <!-- Botón para valorar -->
+            {% if user.is_authenticated %}
+                {% if not ya_opino %}
+                    <a href="{% url 'productos:valorar_producto' producto.pk %}" 
+                       class="btn btn-outline-success btn-sm" style="margin-bottom:10px;">
+                       Valorar este producto
+                    </a>
+                {% endif %}
+            {% else %}
+                <p><a href="{% url 'login' %}">Inicia sesión</a> para valorar este producto.</p>
+            {% endif %}
+
+            <!-- Formulario de añadir al carrito -->
+            <form class="add-to-cart-form" data-product-id="{{ producto.pk }}" action="{% url 'productos:add_to_cart' producto.pk %}" method="post">
+                {% csrf_token %}
+                <div class="quantity-selector">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="number" id="cantidad" name="cantidad" value="1" min="1" max="{{ producto.stock }}" class="quantity-input">
+                </div>
+                <button type="submit" class="btn-add-to-cart">Añadir al Carrito</button>
+            </form>
+            <a href="{% url 'productos:lista_productos' %}" class="btn-back-to-list">Volver a la lista de productos</a>
         </div>
     </div>
-    {% endblock content %}
-    
+
+    <!-- Contenedor de valoraciones -->
+    <div class="product-rating-container" style="margin-top:40px; width:100%; max-width:1100px; margin-left:auto; margin-right:auto; background:#fff; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:32px 28px;">
+        <h3>Opiniones y valoraciones</h3>
+        
+        {% if user.is_authenticated %}
+            {% if not ya_opino %}
+                <a href="{% url 'productos:valorar_producto' producto.pk %}" 
+                   class="btn btn-outline-success btn-sm" style="margin-bottom:18px;">
+                   Dejar opinión
+                </a>
+            {% endif %}
+        {% else %}
+            <p><a href="{% url 'login' %}">Inicia sesión</a> para dejar tu opinión.</p>
+        {% endif %}
+
+        {% if valoraciones %}
+            {% for val in valoraciones %}
+                <div class="valoracion-item" style="border-bottom:1px solid #eee; padding:12px 0;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="color:gold; font-size:1.2em;">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= val.estrellas %}
+                                    &#9733;
+                                {% else %}
+                                    <span style="color:#ccc;">&#9733;</span>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                        <span style="font-weight:600; color:#333;">{{ val.usuario.username }}</span>
+                        <span style="color:#888; font-size:0.95em;">{{ val.fecha|date:"d M Y H:i" }}</span>
+                    </div>
+                    <div style="margin-left:30px; color:#444;">{{ val.comentario }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No hay valoraciones para este producto aún.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

@@ -7,6 +7,8 @@ from django.contrib.auth.views import LoginView
 from productos.models import Producto   # Asegúrate de que esta línea esté presente y correcta.
 from productos.views import _merge_carts 
 from .forms import CustomUserCreationForm
+from django.core.mail import send_mail
+from django.conf import settings
 
 def landing_page(request):
         productos_recuperados = Producto.objects.filter(disponible=True).order_by('-fecha_creacion')[:6]
@@ -28,6 +30,19 @@ def landing_page(request):
         }
         return render(request, 'core/landing_page.html', context)
 
+def enviar_correo_bienvenida(email, nombre):
+    from django.core.mail import send_mail
+    from django.conf import settings
+    subject = '¡Bienvenido a Raberbike!'
+    message = f'Hola {nombre},\n\nGracias por registrarte en Raberbike. Tu cuenta ha sido creada exitosamente.\n\n¡Disfruta de nuestros productos y servicios!\n\nEl equipo de Raberbike.'
+    send_mail(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [email],
+        fail_silently=False
+    )
+
 def register(request):
         if request.method == 'POST':
             form = CustomUserCreationForm(request.POST)
@@ -36,6 +51,8 @@ def register(request):
                 login(request, user)
                 # ¡LLAMADA A LA FUNCIÓN DE FUSIÓN DESPUÉS DE REGISTRARSE E INICIAR SESIÓN!
                 _merge_carts(request, user) 
+                # Enviar correo de bienvenida tras registro exitoso
+                enviar_correo_bienvenida(user.email, user.first_name or user.username)
                 return redirect('landing_page')
         else:
             form = CustomUserCreationForm()
@@ -71,4 +88,17 @@ def nosotros(request):
     return render(request, 'core/nosotros.html')
 
 def contacto(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        email = request.POST.get('email')
+        mensaje = request.POST.get('mensaje')
+        cuerpo = f"Nombre: {nombre}\nCorreo: {email}\nMensaje: {mensaje}"
+        send_mail(
+            'Nuevo mensaje de contacto Raber Biker',
+            cuerpo,
+            settings.DEFAULT_FROM_EMAIL,
+            ['raberbikes@gmail.com'], # Correo de destino corregido
+            fail_silently=False,
+        )
+        return render(request, 'core/contacto.html', {'enviado': True})
     return render(request, 'core/contacto.html')

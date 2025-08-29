@@ -1,5 +1,6 @@
 {# productos/templates/productos/lista_productos.html #}
 {% extends 'core/base.html' %}
+{%load humanize%}
 {% load static %}
 
 {% block title %}Nuestros Productos{% endblock %}
@@ -56,7 +57,7 @@
                                 {% endif %}
                                 <div class="product-info">
                                     <h4><a href="{% url 'productos:detalle_producto' producto.pk %}">{{ producto.nombre }}</a></h4>
-                                    <p>Precio: ${{ producto.precio }}</p>
+                                    <p>Precio: ${{ producto.precio|intcomma }} COP</p>
                                     <p>{{ producto.descripcion|truncatechars:100 }}</p>
 
                                     <form class="add-to-cart-form" data-product-id="{{ producto.pk }}" action="{% url 'productos:add_to_cart' producto.pk %}" method="post">

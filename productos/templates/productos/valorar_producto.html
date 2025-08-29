@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Valorar producto - {{ producto.nombre }}{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <div class="product-rating-form-container" style="background: #fff; max-width: 600px; margin: 40px auto 0 auto; padding: 32px 28px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+        <h2 style="margin-top:0;">Valorar: {{ producto.nombre }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group" style="margin-bottom: 18px;">
+                <label style="font-weight:600;">{{ form.estrellas.label }}</label><br>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    {% for radio in form.estrellas %}
+                        <label style="cursor:pointer; font-size:1.5em; color:gold; margin-right:8px;">
+                            {{ radio.tag }}<span style="vertical-align:middle;">★</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <div style="color:#d9534f; font-size:0.95em;">{{ form.estrellas.errors }}</div>
+            </div>
+            <div class="form-group" style="margin-bottom: 18px;">
+                <label style="font-weight:600;">{{ form.comentario.label }}</label><br>
+                {{ form.comentario|safe }}
+                <div style="color:#d9534f; font-size:0.95em;">{{ form.comentario.errors }}</div>
+            </div>
+            <button type="submit" class="btn btn-success" style="width:100%; font-weight:600;">Guardar valoración</button>
+            <a href="{% url 'productos:detalle_producto' producto.pk %}" class="btn btn-secondary" style="width:100%; margin-top:10px;">Cancelar</a>
+        </form>
+    </div>
+</div>
+<style>
+.form-control { width: 100%; min-height: 80px; border-radius: 8px; border: 1px solid #ddd; padding: 10px; font-size: 1em; }
+.form-control:focus { border-color: #007bff; outline: none; }
+</style>
+{% endblock content %}

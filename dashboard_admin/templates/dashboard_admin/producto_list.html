@@ -1,4 +1,5 @@
-    {% extends 'dashboard_admin/dashboard_base.html' %}
+{% extends 'dashboard_admin/dashboard_base.html' %}
+{% load humanize %}
 
     {% block title %}Productos{% endblock %}
 
@@ -8,53 +9,58 @@
             <i class="fas fa-plus-circle me-2"></i> Nuevo Producto
         </a>
 
-        {% if productos %}
-            <div class="data-table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Stock</th>
-                            <th>Disponible</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for producto in productos %}
-                            <tr>
-                                <td>{{ producto.pk }}</td>
-                                <td>{{ producto.nombre }}</td>
-                                <td>${{ producto.precio }}</td>
-                                <td>{{ producto.stock }}</td>
-                                <td>
-                                    {% if producto.disponible %}
-                                        <span style="color: #28a745; font-weight: bold;">Sí</span>
-                                    {% else %}
-                                        <span style="color: #dc3545; font-weight: bold;">No</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <a href="{% url 'dashboard_admin:producto_update' producto.pk %}" class="btn-custom btn-sm-custom btn-info-custom me-2" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{% url 'dashboard_admin:producto_delete' producto.pk %}" method="post" class="d-inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este producto?');">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn-custom btn-sm-custom btn-danger-custom" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div class="admin-card-unificado product-list-container-custom">
+            <div class="admin-card-title">Listado de Productos</div>
+            <div class="table-responsive">
+                {% if productos %}
+                    <div class="data-table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                    <th>Stock</th>
+                                    <th>Disponible</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for producto in productos %}
+                                    <tr class="product-row-separator-custom">
+                                        <td>{{ producto.pk }}</td>
+                                        <td>{{ producto.nombre }}</td>
+                                        <td>${{ producto.precio|intcomma }} COP</td>
+                                        <td>{{ producto.stock }}</td>
+                                        <td>
+                                            {% if producto.disponible %}
+                                                <span style="color: #28a745; font-weight: bold;">Sí</span>
+                                            {% else %}
+                                                <span style="color: #dc3545; font-weight: bold;">No</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'dashboard_admin:producto_update' producto.pk %}" class="btn-custom btn-sm-custom btn-info-custom me-2" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{% url 'dashboard_admin:producto_delete' producto.pk %}" method="post" class="d-inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este producto?');">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn-custom btn-sm-custom btn-danger-custom" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="messages-container">
+                        <li class="alert-info">No hay productos registrados aún.</li>
+                    </div>
+                {% endif %}
             </div>
-        {% else %}
-            <div class="messages-container">
-                <li class="alert-info">No hay productos registrados aún.</li>
-            </div>
-        {% endif %}
+        </div>
     {% endblock %}
-    

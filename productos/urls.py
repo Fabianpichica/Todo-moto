@@ -17,5 +17,11 @@ urlpatterns = [
    path('process-checkout/', views.process_checkout, name='process_checkout'),
    path('mis-pedidos/', views.mis_pedidos, name='mis_pedidos'),
    path('mi-cuenta/', views.mi_cuenta, name='mi_cuenta'),
+   path('pedido/<int:pedido_id>/', views.detalle_pedido, name='detalle_pedido'),
+   path('pedido/<int:pedido_id>/modificar/', views.modificar_pedido, name='modificar_pedido'),
+   path('pedido/<int:pedido_id>/cancelar/', views.cancelar_pedido, name='cancelar_pedido'),
+   path('favorito/<int:pk>/toggle/', views.toggle_favorito, name='toggle_favorito'),
+   path('<int:pk>/valorar/', views.valorar_producto, name='valorar_producto'),
+   path('favoritos/', views.favoritos, name='favoritos'),
 ]
 

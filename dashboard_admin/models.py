@@ -13,6 +13,7 @@ class Categoria(models.Model):
     descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
     fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
     fecha_actualizacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de Última Actualización")
+    activa = models.BooleanField(default=True, verbose_name="¿Activa?")
 
     class Meta:
         verbose_name = "Categoría"

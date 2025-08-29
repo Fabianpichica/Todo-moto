@@ -1,4 +1,4 @@
- /* --- Variables CSS para el Admin --- */
+/* --- Variables CSS para el Admin --- */
 :root {
     --primary-red: #c1c606; /* Tu color principal */
     --dark-red: #9c9d15; /* Un tono más oscuro para hover/activo */
@@ -310,6 +310,15 @@ body {
     background-color: #e9ecef;
 }
 
+/* Elimina estilos específicos de .product-table-custom y .data-table, y mejora .table-bordered para todas las tablas del dashboard admin */
+.table-bordered {
+    border: 1px solid var(--border-color);
+}
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid var(--border-color);
+}
+
 /* Estilos de botones (general para el admin) */
 .btn-custom {
     display: inline-flex;
@@ -425,7 +434,7 @@ body {
 
 /* Estilos de formularios (general para el admin) */
 .form-group-custom {
-    margin-bottom: 1rem;
+    margin-bottom: 0;
 }
 
 .form-label-custom {
@@ -485,6 +494,59 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
+/* Mejora el tamaño y espaciado del formulario de productos */
+.form-container-custom {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 32px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.field-separator-custom {
+    border: none;
+    border-top: 2px solid #e0e0e0;
+    margin: 24px 0;
+}
+
+@media (min-width: 1200px) {
+    .form-container-custom {
+        max-width: 900px;
+        padding: 40px 60px;
+    }
+}
+
+/* Mejora el tamaño y espaciado de la lista de productos */
+.product-list-container-custom {
+    width: 100%;
+    margin: 40px auto;
+    background: #fff;
+    padding: 32px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.product-table-custom th, .product-table-custom td {
+    font-size: 1.08rem;
+    padding: 16px 12px;
+}
+
+.product-row-separator-custom {
+    border-bottom: 2px solid #e0e0e0;
+}
+
+@media (min-width: 1200px) {
+    .product-list-container-custom {
+        max-width: 1400px;
+        padding: 40px 60px;
+    }
+    .product-table-custom th, .product-table-custom td {
+        font-size: 1.18rem;
+        padding: 20px 18px;
+    }
+}
+
 /* Estilos para paginación */
 .pagination {
     display: flex;
@@ -523,6 +585,40 @@ body {
     border-color: var(--border-color);
 }
 
+/* Estilos de botones de Bootstrap */
+.btn {
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.375rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.btn-success {
+    color: #fff;
+    background-color: #198754;
+    border-color: #198754;
+}
+.btn-success:hover {
+    color: #fff;
+    background-color: #157347;
+    border-color: #146c43;
+}
+.btn-outline-danger {
+    color: #dc3545;
+    background-color: transparent;
+    border-color: #dc3545;
+}
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
 
 /* --- Media Queries para responsividad --- */
 

@@ -16,7 +16,8 @@ urlpatterns = [
         path('categorias/crear/', views.categoria_create, name='categoria_create'),
         path('categorias/<int:pk>/editar/', views.categoria_update, name='categoria_update'),
         path('categorias/<int:pk>/eliminar/', views.categoria_delete, name='categoria_delete'),
-
+        path('categorias/<int:pk>/desactivar/', views.desactivar_categoria, name='desactivar_categoria'),
+        path('categorias/<int:pk>/activar/', views.activar_categoria, name='activar_categoria'),
 
         path('ver-pedidos/', views.ver_pedidos, name='ver_pedidos'),
 
@@ -26,7 +27,8 @@ urlpatterns = [
 
         path('pedidos/<int:pedido_id>/descargar-factura/', views.descargar_factura, name='descargar_factura'),
 
+        path('cambiar-estado-pedido/<int:pedido_id>/', views.cambiar_estado_pedido, name='cambiar_estado_pedido'),
+
         path('inventario/', include('inventario.urls')),
 ]
-    
-    
+

@@ -1,4 +1,4 @@
-    {% extends 'dashboard_admin/dashboard_base.html' %}
+{% extends 'dashboard_admin/dashboard_base.html' %}
 
     {% block title %}Dashboard Admin{% endblock %}
 
@@ -20,8 +20,6 @@
                     <div><i class="fas fa-angle-right"></i></div>
                 </div>
             </div>
-
-         {# NUEVA TARJETA: Gestión de Pedidos #}
             <div class="dashboard-card bg-info-custom">
                 <div class="card-body-custom">Pedidos de Clientes</div>
                 <div class="card-footer-custom">
@@ -29,8 +27,6 @@
                 <div><i class="fas fa-angle-right"></i></div>
             </div>
         </div>
-
-         {# NUEVA TARJETA: Gestión de Clientes #}
         <div class="dashboard-card bg-secondary-custom">
             <div class="card-body-custom">Gestión de Clientes</div>
             <div class="card-footer-custom">
@@ -38,8 +34,6 @@
                 <div><i class="fas fa-angle-right"></i></div>
             </div>
         </div>
-
-        {# NUEVA TARJETA: Panel de Reportes #}
         <div class="dashboard-card bg-warning-custom">
             <div class="card-body-custom">Reportes y Análisis</div>
             <div class="card-footer-custom">
@@ -47,9 +41,6 @@
                 <div><i class="fas fa-angle-right"></i></div>
             </div>
         </div>
-
-
-        
         <div class="dashboard-card bg-dark-custom">
             <div class="card-body-custom">Gestión de Inventario</div>
             <div class="card-footer-custom">
@@ -57,9 +48,5 @@
                 <div><i class="fas fa-angle-right"></i></div>
             </div>
         </div>
-
-
-        {# Fin de la nueva tarjeta #}
         </div>
     {% endblock %}
-    

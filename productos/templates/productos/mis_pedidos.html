@@ -26,7 +26,7 @@
                         <td>${{ pedido.total_pedido|floatformat:2 }}</td>
                         <td><span class="badge bg-info">{{ pedido.estado }}</span></td>
                         <td>
-                            <a href="{% url 'productos:detalle_producto' pedido.id %}" class="btn btn-outline-primary btn-sm me-2">Ver Detalles</a>
+                            <a href="{% url 'productos:detalle_pedido' pedido.id %}" class="btn btn-outline-primary btn-sm me-2">Ver Detalles</a>
                             <!-- Botón para descargar la factura en PDF -->
                             <a href="{% url 'dashboard_admin:descargar_factura' pedido.id %}" class="btn btn-outline-info btn-sm">
                                 <i class="fas fa-file-pdf me-1"></i> Factura

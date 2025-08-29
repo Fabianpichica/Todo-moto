@@ -9,7 +9,7 @@ from django.db.models.signals import post_save
 class Producto(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    precio = models.DecimalField(max_digits=12, decimal_places=0, verbose_name="Precio (COP)")
     imagen = models.ImageField(upload_to='productos/', null=True, blank=True) # Las imágenes se guardarán en media/productos/
     stock = models.IntegerField(default=0)
     disponible = models.BooleanField(default=True)
@@ -54,6 +54,8 @@ class CarritoItem(models.Model):
 # Añade una tupla de opciones para los estados del pedido
 ESTADO_CHOICES = (
     ('Pendiente', 'Pendiente'),
+    ('En camino', 'En camino'),
+    ('Entregado', 'Entregado'),
     ('Completado', 'Completado'),
     ('Cancelado', 'Cancelado'),
 )
@@ -103,5 +105,34 @@ def crear_o_actualizar_perfil_usuario(sender, instance, created, **kwargs):
     instance.perfil.save()
 
 
+class Favorito(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favoritos')
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='favoritos')
+    fecha_agregado = models.DateTimeField(auto_now_add=True)
 
-    
+    class Meta:
+        unique_together = ('usuario', 'producto')
+        verbose_name = 'Favorito'
+        verbose_name_plural = 'Favoritos'
+
+    def __str__(self):
+        return f'{self.usuario.username} - {self.producto.nombre}'
+
+class Valoracion(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='valoraciones')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='valoraciones')
+    estrellas = models.PositiveSmallIntegerField(choices=[(i, str(i)) for i in range(1, 6)])
+    comentario = models.TextField(blank=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('producto', 'usuario')
+        verbose_name = 'Valoración'
+        verbose_name_plural = 'Valoraciones'
+        ordering = ['-fecha']
+
+    def __str__(self):
+        return f'{self.producto.nombre} - {self.estrellas} estrellas por {self.usuario.username}'
+
+
+

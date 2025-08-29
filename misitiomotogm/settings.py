@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'core',
     'productos',
     'dashboard_admin',
@@ -111,10 +112,17 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 
-LANGUAGE_CODE = 'es' # <-- Cambia esto a 'es'
+LANGUAGE_CODE = 'es-co' # <-- Cambia esto a 'es'
 TIME_ZONE = 'America/Bogota' # <-- O tu zona horaria local (ej. 'America/Bogota' para Colombia)
 USE_I18N = True # <-- Debe estar en True
 USE_TZ = True # <-- Debe estar en True
+# Formato de números y localización
+USE_L10N = True
+USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = '.'
+DECIMAL_SEPARATOR = ','
+NUMBER_GROUPING = 3
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -145,5 +153,33 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Email backend para pruebas locales
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'rabe  rbikes@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'skml vdcd ygdb xugi')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# --- SEGURIDAD ---
+# ¡IMPORTANTE! Cambia estos valores cuando pases a producción.
+DEBUG = True  # Cambia a False en producción
+ALLOWED_HOSTS = []  # Agrega tus dominios en producción
+
+# Protege tus cookies de sesión y CSRF (no requiere HTTPS aún, pero es buena práctica dejarlo listo)
+SESSION_COOKIE_SECURE = False  # Cambia a True en producción con HTTPS
+CSRF_COOKIE_SECURE = False     # Cambia a True en producción con HTTPS
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Protección adicional para formularios y sesiones
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+
+# --- OTRAS BUENAS PRÁCTICAS ---
+# No publiques tu SECRET_KEY en repositorios públicos
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-7#v@a*sa5f%7h_1d979spq$8%-7n1g^&_7wig7jmalcfd_bbup')
+# Cambia la línea anterior y usa variables de entorno en producción
+
 

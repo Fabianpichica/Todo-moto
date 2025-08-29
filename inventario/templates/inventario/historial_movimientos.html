@@ -4,192 +4,48 @@
 {% block title %}Historial de Movimientos{% endblock %}
 
 {% block dashboard_content %}
-<style>
-    /* Estilos para el título y botones */
-    .content-subtitle {
-        color: #343a40;
-        font-weight: 600;
-        margin-bottom: 20px;
-    }
-    
-    .btn-primary-custom {
-        background-color: #343a40;
-        color: #ffffff;
-        border: 1px solid #343a40;
-        padding: 8px 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-primary-custom:hover {
-        background-color: #212529;
-    }
-    
-    .btn-outline-info-custom {
-        color: #cc1133;
-        background-color: transparent;
-        border: 1px solid #c71414;
-        padding: 8px 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .btn-outline-info-custom:hover {
-        background-color: #cd2013;
-        color: #ffffff;
-    }
-    
-    /* Estilos para la tabla */
-    .table-responsive {
-        overflow-x: auto;
-    }
-
-    .table {
-        width: 100%;
-        margin-bottom: 1rem;
-        color: #212529;
-        border-collapse: collapse;
-    }
-
-    .table th,
-    .table td {
-        padding: 0.75rem;
-        vertical-align: top;
-        border-top: 1px solid #dee2e6;
-    }
-
-    .table thead th {
-        vertical-align: bottom;
-        border-bottom: 2px solid #dee2e6;
-        background-color: #f8f9fa;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-    }
-
-    .table tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-    
-    /* Estilos para los badges */
-    .badge {
-        padding: 0.35em 0.65em;
-        font-size: 0.75em;
-        font-weight: 700;
-        line-height: 1;
-        color: #fff;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: baseline;
-        border-radius: 0.25rem;
-    }
-
-    .bg-success {
-        background-color: #28a745 !important;
-    }
-
-    .bg-danger {
-        background-color: #dc3545 !important;
-    }
-
-    /* Estilos para la paginación */
-    .pagination {
-        display: flex;
-        justify-content: center;
-        padding-left: 0;
-        list-style: none;
-    }
-    .page-item .page-link {
-        position: relative;
-        display: block;
-        padding: 0.5rem 0.75rem;
-        margin-left: -1px;
-        line-height: 1.25;
-        color: #007bff;
-        background-color: #fff;
-        border: 1px solid #dee2e6;
-        text-decoration: none;
-    }
-
-    .page-item .page-link:hover {
-        z-index: 2;
-        color: #0056b3;
-        text-decoration: none;
-        background-color: #e9ecef;
-        border-color: #dee2e6;
-    }
-
-    .page-item.disabled .page-link {
-        color: #6c757d;
-        pointer-events: none;
-        cursor: auto;
-        background-color: #fff;
-        border-color: #dee2e6;
-    }
-
-</style>
-    
 <div class="container-fluid-custom py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="content-subtitle">Historial de Movimientos de Inventario</h2>
         <div>
-            <a href="{% url 'inventario:crear_movimiento' %}" class="btn-primary-custom">
+            <a href="{% url 'inventario:crear_movimiento' %}" class="btn btn-success">
                 <i class="fas fa-plus me-1"></i> Nuevo Movimiento
             </a>
-            <a href="{% url 'inventario:descargar_historial_pdf' %}" class="btn-outline-info-custom">
+            <a href="{% url 'inventario:descargar_historial_pdf' %}" class="btn btn-outline-danger ms-2">
                 <i class="fas fa-file-pdf me-1"></i> Descargar Historial
             </a>
         </div>
     </div>
-
     <div class="card shadow-sm mb-4">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Producto</th>
-                            <th>Tipo</th>
-                            <th>Motivo</th>
-                            <th>Cantidad</th>
                             <th>Fecha</th>
                             <th>Usuario</th>
-                            <th>Descripción</th>
+                            <th>Tipo</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for movimiento in page_obj %}
-                        <tr>
-                            <td>{{ movimiento.id }}</td>
-                            <td>{{ movimiento.producto.nombre }}</td>
-                            <td>
-                                {% if movimiento.tipo_movimiento == 'Entrada' %}
-                                    <span class="badge bg-success">{{ movimiento.tipo_movimiento }}</span>
-                                {% else %}
-                                    <span class="badge bg-danger">{{ movimiento.tipo_movimiento }}</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ movimiento.motivo }}</td>
-                            <td>{{ movimiento.cantidad }}</td>
-                            <td>{{ movimiento.fecha_movimiento|date:"Y-m-d H:i" }}</td>
-                            <td>{{ movimiento.usuario.username }}</td>
-                            <td>{{ movimiento.descripcion|default:"N/A" }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="text-center">No hay movimientos de inventario registrados.</td>
-                        </tr>
+                        {% for movimiento in page_obj.object_list %}
+                            <tr>
+                                <td>{{ movimiento.id }}</td>
+                                <td>{{ movimiento.fecha_movimiento|date:"d/m/Y H:i" }}</td>
+                                <td>{{ movimiento.usuario }}</td>
+                                <td>{{ movimiento.get_tipo_movimiento_display }}</td>
+                                <td>{{ movimiento.producto }}</td>
+                                <td>{{ movimiento.cantidad }}</td>
+                            </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-    {# Controles de paginación #}
     {% if page_obj.has_other_pages %}
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
@@ -198,9 +54,7 @@
                 <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
             </li>
             {% endif %}
-            
             <li class="page-item disabled"><span class="page-link">{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span></li>
-
             {% if page_obj.has_next %}
             <li class="page-item">
                 <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -89,29 +90,41 @@
 </head>
 <body>
     <div class="container">
+        <!-- Datos de la empresa -->
         <div class="header">
             <div>
-                <h1>Factura de Pedido</h1>
-                <p>Nº de Factura: {{ pedido.id }}</p>
-                <p>Fecha del Pedido: {{ pedido.fecha_creacion|date:"d M Y" }}</p>
+                <h1>Factura de Venta</h1>
+                <p><strong>Empresa:</strong> ____________________________</p>
+                <p><strong>NIT:</strong> _______________________________</p>
+                <p><strong>Dirección:</strong> _________________________</p>
+                <p><strong>Teléfono:</strong> __________________________</p>
+                <p><strong>Régimen:</strong> ___________________________</p>
+                <p><strong>Resolución DIAN:</strong> ___________________</p>
+                <p><strong>Prefijo y rango autorizado:</strong> ________</p>
             </div>
-            <!-- Si tienes un logo para tu negocio, puedes usarlo aquí -->
-            <!-- <img src="URL_A_TU_LOGO" alt="Logo de la Empresa" class="logo"> -->
+            <img src="{% static 'core/logonegro.png' %}" alt="Logo de la Empresa" class="logo">
+        </div>
+
+        <!-- Datos de la factura -->
+        <div style="margin-bottom: 20px;">
+            <p><strong>Nº de Factura:</strong> {{ pedido.id }}</p>
+            <p><strong>Fecha de Expedición:</strong> {{ pedido.fecha_creacion|date:"d M Y H:i" }}</p>
+            <p><strong>Forma de Pago:</strong> _________________________</p>
         </div>
 
         <div class="info-grid">
             <div class="info-block">
                 <h3>Información del Cliente</h3>
-                <p><strong>Nombre:</strong> {{ pedido.cliente.first_name }} {{ pedido.cliente.last_name }}</p>
-                <p><strong>Email:</strong> {{ pedido.cliente.email }}</p>
+                <p><strong>Nombre:</strong> {{ pedido.nombre }}</p>
+                <p><strong>NIT/Cédula:</strong> ________________________</p>
+                <p><strong>Email:</strong> {{ pedido.usuario.email }}</p>
                 <p><strong>Teléfono:</strong> {{ pedido.telefono }}</p>
+                <p><strong>Dirección:</strong> _________________________</p>
             </div>
             <div class="info-block">
                 <h3>Información de Envío</h3>
-                <p><strong>Dirección:</strong> {{ pedido.direccion_envio }}</p>
+                <p><strong>Dirección:</strong> {{ pedido.direccion }}</p>
                 <p><strong>Ciudad:</strong> {{ pedido.ciudad }}</p>
-                <p><strong>Código Postal:</strong> {{ pedido.codigo_postal }}</p>
-                <p><strong>País:</strong> {{ pedido.pais }}</p>
             </div>
         </div>
 
@@ -126,12 +139,12 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in pedido.pedidoitem_set.all %}
+                {% for item in pedido.items.all %}
                 <tr>
                     <td>{{ item.producto.nombre }}</td>
                     <td>{{ item.cantidad }}</td>
-                    <td>${{ item.precio|floatformat:2 }}</td>
-                    <td>${{ item.get_total|floatformat:2 }}</td>
+                    <td>${{ item.precio_unitario|floatformat:2 }}</td>
+                    <td>${{ item.cantidad|floatformat:0 }} x ${{ item.precio_unitario|floatformat:2 }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -140,16 +153,32 @@
         <table class="totals-table">
             <tr>
                 <th>Subtotal</th>
-                <td>${{ pedido.total_pedido|floatformat:2 }}</td>
+                <td>${{ subtotal|floatformat:2 }}</td>
+            </tr>
+            <tr>
+                <th>IVA (19%)</th>
+                <td>${{ iva|floatformat:2 }}</td>
             </tr>
             <tr>
                 <th>Total</th>
-                <td>${{ pedido.total_pedido|floatformat:2 }}</td>
+                <td>${{ total|floatformat:2 }}</td>
             </tr>
         </table>
 
+        <!-- Nota legal y firma -->
+        <div style="margin-top: 30px;">
+            <p><em>Esta factura de venta se asimila en todos sus efectos legales a una letra de cambio (Art. 774 del Código de Comercio).</em></p>
+            <p><strong>Firma responsable:</strong> ____________________________</p>
+        </div>
+
+        <!-- Espacio para CUFE o código QR (facturación electrónica) -->
+        {# <div style="margin-top: 20px;">
+            <p><strong>CUFE:</strong> ____________________________</p>
+            <img src="{{ cufe_qr_url }}" alt="Código QR CUFE" style="max-width:120px;">
+        </div> #}
+
         <div class="footer">
-            <p>¡Gracias por tu compra en MotoGM!</p>
+            <p>¡Gracias por tu compra en raber biker!</p>
             <p>Si tienes alguna pregunta sobre tu pedido, contáctanos a través de nuestro sitio web.</p>
         </div>
     </div>

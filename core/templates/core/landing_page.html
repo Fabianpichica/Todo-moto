@@ -8,9 +8,9 @@
 <div class="main-content no-padding-top">
   <section class="landing-hero">
     <div class="hero-overlay">
-      <div class="hero-content">
+      <div class="hero-content hero-content-landing">
         {# Cuadro de botones - SIEMPRE VISIBLE #}
-        <div class="hero-box hero-buttons">
+        <div class="hero-box hero-buttons hero-box-lg">
           <a href="{% url 'productos:lista_productos' %}" class="btn-hero">PRODUCTOS</a>
           <a href="{% url 'nosotros' %}" class="btn-hero">NOSOTROS</a>
           <a href="{% url 'contacto' %}" class="btn-hero">CONTACTO</a>
@@ -18,7 +18,7 @@
 
         {# Cuadro de login - SOLO VISIBLE SI EL USUARIO NO ESTÁ AUTENTICADO #}
         {% if not user.is_authenticated %}
-          <div class="hero-box hero-login">
+          <div class="hero-box hero-login hero-box-lg">
             <h2>INICIAR SESIÓN</h2>
             <form method="post" action="{% url 'login' %}">
               {% csrf_token %}

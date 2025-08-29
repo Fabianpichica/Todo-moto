@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Mis Favoritos{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <div class="favoritos-container" style="background:#fff; max-width:1200px; margin:40px auto 0 auto; padding:32px 28px; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+        <h2 style="margin-top:0;">Mis Productos Favoritos</h2>
+        {% if favoritos %}
+            <div class="row">
+                {% for fav in favoritos %}
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100">
+                            <a href="{% url 'productos:detalle_producto' fav.producto.pk %}">
+                                {% if fav.producto.imagen %}
+                                    <img src="{{ fav.producto.imagen.url }}" class="card-img-top" alt="{{ fav.producto.nombre }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/400x300?text=Sin+Imagen" class="card-img-top" alt="Sin imagen">
+                                {% endif %}
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ fav.producto.nombre }}</h5>
+                                <p class="card-text">{{ fav.producto.descripcion|truncatechars:80 }}</p>
+                                <p class="card-text"><strong>Precio:</strong> ${{ fav.producto.precio }}</p>
+                                <a href="{% url 'productos:detalle_producto' fav.producto.pk %}" class="btn btn-outline-primary btn-sm">Ver producto</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No tienes productos favoritos aún.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

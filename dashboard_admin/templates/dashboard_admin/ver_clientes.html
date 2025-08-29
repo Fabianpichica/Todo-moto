@@ -98,51 +98,47 @@
     
     <div class="row">
         <div class="col-12">
-            <div class="card-clientes">
-                <div class="card-header-clientes">
-                    <h6 class="text-white text-capitalize">Lista de Clientes Registrados</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table-clientes">
-                            <thead>
-                                <tr>
-                                    <th>Usuario</th>
-                                    <th>Email</th>
-                                    <th>Último Acceso</th>
-                                    <th>Activo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for cliente in page_obj %}
-                                <tr>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ cliente.username }}</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ cliente.email }}</p>
-                                    </td>
-                                    <td>
-                                        <span class="text-secondary text-xs font-weight-bold">
-                                            {% if cliente.last_login %}
-                                                {{ cliente.last_login|date:"d M Y H:i" }}
-                                            {% else %}
-                                                Nunca
-                                            {% endif %}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        {% if cliente.is_active %}
-                                            <span class="badge badge-success">Sí</span>
+            <div class="admin-card-unificado">
+                <div class="admin-card-title">Listado de Clientes</div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Último Acceso</th>
+                                <th>Activo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cliente in page_obj %}
+                            <tr>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">{{ cliente.username }}</p>
+                                </td>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">{{ cliente.email }}</p>
+                                </td>
+                                <td>
+                                    <span class="text-secondary text-xs font-weight-bold">
+                                        {% if cliente.last_login %}
+                                            {{ cliente.last_login|date:"d M Y H:i" }}
                                         {% else %}
-                                            <span class="badge badge-danger">No</span>
+                                            Nunca
                                         {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if cliente.is_active %}
+                                        <span class="badge badge-success">Sí</span>
+                                    {% else %}
+                                        <span class="badge badge-danger">No</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

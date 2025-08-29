@@ -1,4 +1,4 @@
-    {% extends 'dashboard_admin/dashboard_base.html' %}
+{% extends 'dashboard_admin/dashboard_base.html' %}
 
     {% block title %}Categorías{% endblock %}
 
@@ -8,46 +8,65 @@
             <i class="fas fa-plus-circle me-2"></i> Nueva Categoría
         </a>
 
-        {% if categorias %}
-            <div class="data-table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Fecha de Creación</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for categoria in categorias %}
-                            <tr>
-                                <td>{{ categoria.pk }}</td>
-                                <td>{{ categoria.nombre }}</td>
-                                <td>{{ categoria.descripcion|default:"N/A" }}</td>
-                                <td>{{ categoria.fecha_creacion|date:"d M Y H:i" }}</td>
-                                <td>
-                                    <a href="{% url 'dashboard_admin:categoria_update' categoria.pk %}" class="btn-custom btn-sm-custom btn-info-custom me-2" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{% url 'dashboard_admin:categoria_delete' categoria.pk %}" method="post" class="d-inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar la categoría \'{{ categoria.nombre }}\'?');">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn-custom btn-sm-custom btn-danger-custom" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div class="admin-card-unificado">
+            <div class="admin-card-title">Listado de Categorías</div>
+            <div class="table-responsive">
+                {% if categorias %}
+                    <div class="data-table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Fecha de Creación</th>
+                                    <th>Acciones</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for categoria in categorias %}
+                                    <tr>
+                                        <td>{{ categoria.pk }}</td>
+                                        <td>{{ categoria.nombre }}</td>
+                                        <td>{{ categoria.descripcion|default:"N/A" }}</td>
+                                        <td>{{ categoria.fecha_creacion|date:"d M Y H:i" }}</td>
+                                        <td style="min-width: 180px;">
+                                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                                <a href="{% url 'dashboard_admin:categoria_update' categoria.pk %}" class="btn-custom btn-xs-custom btn-info-custom" style="padding: 2px 8px; font-size: 0.8rem;" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                {% if categoria.activa %}
+                                                    <form method="post" action="{% url 'dashboard_admin:desactivar_categoria' categoria.id %}" style="margin:0;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-ban"></i> Desactivar</button>
+                                                    </form>
+                                                {% else %}
+                                                    <form method="post" action="{% url 'dashboard_admin:activar_categoria' categoria.id %}" style="margin:0;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Activar</button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% if categoria.activa %}
+                                                <span class="badge" style="border:2px solid #28a745; color:#28a745; background:transparent; padding:5px 12px; font-weight:bold;">Activa</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary" style="border:2px solid #dc3545; color:#dc3545; background:transparent; padding:5px 12px; font-weight:bold;">Desactivada</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="messages-container">
+                        <li class="alert-info">No hay categorías registradas aún.</li>
+                    </div>
+                {% endif %}
             </div>
-        {% else %}
-            <div class="messages-container">
-                <li class="alert-info">No hay categorías registradas aún.</li>
-            </div>
-        {% endif %}
+        </div>
     {% endblock %}
-    
-    
+

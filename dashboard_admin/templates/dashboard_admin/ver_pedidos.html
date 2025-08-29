@@ -1,5 +1,6 @@
 {# dashboard_admin/templates/dashboard_admin/ver_pedidos.html #}
 {% extends 'dashboard_admin/dashboard_base.html' %}
+{% load humanize %}
 {% load static %}
 
 {% block title %}Ver Pedidos{% endblock %}
@@ -207,62 +208,77 @@
     
     <div class="row">
         <div class="col-12">
-            <div class="card-pedidos">
-                <div class="card-header-pedidos">
-                    <h6 class="text-white text-capitalize">Lista de Pedidos</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table-pedidos">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Cliente</th>
-                                    <th>Total</th>
-                                    <th>Estado</th>
-                                    <th>Fecha de Pedido</th>
-                                    <th>Detalles</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for pedido in page_obj %}
-                                <tr>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">#{{ pedido.pk }}</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ pedido.nombre }} ({{ pedido.usuario.username }})</p>
-                                        <p class="text-xs text-secondary mb-0">Envío a: {{ pedido.direccion }}, {{ pedido.ciudad }}</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">${{ pedido.total_pedido|floatformat:2 }}</p>
-                                    </td>
-                                    <td>
-                                        {% if pedido.estado == 'Completado' %}
-                                            <span class="badge badge-success">{{ pedido.estado }}</span>
-                                        {% elif pedido.estado == 'Cancelado' %}
-                                            <span class="badge badge-danger">{{ pedido.estado }}</span>
-                                        {% else %}
-                                            <span class="badge badge-warning">{{ pedido.estado }}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td class="align-middle">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ pedido.fecha_creacion|date:"d M Y H:i" }}</span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <button class="btn-detalles" onclick="showModal('pedidoModal-{{ pedido.pk }}')">
-                                            Ver Productos
-                                        </button>
-                                        <!-- NUEVO BOTÓN para descargar la factura -->
-                                        <a href="{% url 'dashboard_admin:descargar_factura' pedido.id %}" class="btn-factura">
-                                            <i class="fas fa-file-pdf"></i> Factura
-                                        </a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="admin-card-unificado">
+                <div class="admin-card-title">Listado de Pedidos</div>
+                <div class="table-responsive">
+                    {% if messages %}
+                        <div style="margin-bottom: 20px;">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}" style="padding: 10px 20px; border-radius: 6px; margin-bottom: 8px; font-size: 0.95rem; background-color: {% if message.tags == 'success' %}#d4edda{% elif message.tags == 'error' %}#f8d7da{% else %}#fff3cd{% endif %}; color: {% if message.tags == 'success' %}#155724{% elif message.tags == 'error' %}#721c24{% else %}#856404{% endif %}; border: 1px solid {% if message.tags == 'success' %}#c3e6cb{% elif message.tags == 'error' %}#f5c6cb{% else %}#ffeeba{% endif %};">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Fecha de Pedido</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pedido in page_obj %}
+                            <tr>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">#{{ pedido.pk }}</p>
+                                </td>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">{{ pedido.nombre }} ({{ pedido.usuario.username }})</p>
+                                    <p class="text-xs text-secondary mb-0">Envío a: {{ pedido.direccion }}, {{ pedido.ciudad }}</p>
+                                </td>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">${{ pedido.total_pedido|intcomma }} COP</p>
+                                </td>
+                                <td>
+                                    {% if pedido.estado == 'Pendiente' %}
+                                        <form method="post" action="{% url 'dashboard_admin:cambiar_estado_pedido' pedido.pk %}" style="display:inline;">
+                                            {% csrf_token %}
+                                            <select name="nuevo_estado" onchange="this.form.submit()" style="padding:4px 8px; border-radius:8px; font-size:0.85rem;">
+                                                <option value="Pendiente" {% if pedido.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                                                <option value="En camino" {% if pedido.estado == 'En camino' %}selected{% endif %}>En camino</option>
+                                                <option value="Entregado" {% if pedido.estado == 'Entregado' %}selected{% endif %}>Entregado</option>
+                                                <option value="Cancelado" {% if pedido.estado == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+                                            </select>
+                                        </form>
+                                    {% elif pedido.estado == 'Completado' %}
+                                        <span class="badge badge-success">{{ pedido.estado }}</span>
+                                    {% elif pedido.estado == 'Cancelado' %}
+                                        <span class="badge badge-danger">{{ pedido.estado }}</span>
+                                    {% else %}
+                                        <span class="badge badge-warning">{{ pedido.estado }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    <span class="text-secondary text-xs font-weight-bold">{{ pedido.fecha_creacion|date:"d M Y H:i" }}</span>
+                                </td>
+                                <td class="align-middle">
+                                    <button class="btn-detalles" onclick="showModal('pedidoModal-{{ pedido.pk }}')">
+                                        Ver Productos
+                                    </button>
+                                    <!-- NUEVO BOTÓN para descargar la factura -->
+                                    <a href="{% url 'dashboard_admin:descargar_factura' pedido.id %}" class="btn-factura">
+                                        <i class="fas fa-file-pdf"></i> Factura
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

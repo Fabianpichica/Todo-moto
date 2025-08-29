@@ -7,7 +7,12 @@
             <h2 class="mb-0 fw-bold">Contáctanos</h2>
         </div>
         <div class="card-body">
-            <p class="mb-3">¿Tienes una queja, petición, reclamo o sugerencia? Escríbenos y te responderemos lo más pronto posible.</p>
+            <p class="mb-3" style="text-align: justify;">¿Tienes una queja, petición, reclamo o sugerencia? Escríbenos y te responderemos lo más pronto posible.</p>
+            {% if enviado %}
+                <div class="alert alert-success mt-3" role="alert">
+                    ¡Tu mensaje ha sido enviado exitosamente! Pronto nos pondremos en contacto contigo.
+                </div>
+            {% endif %}
             <form action="" method="post">
                 {% csrf_token %}
                 <div class="mb-3">

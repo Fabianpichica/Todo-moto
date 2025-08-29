@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Factura de Compra MotoGM</title>
+    <title>Factura de Compra raber biker</title>
     <style>
         body { font-family: Arial, sans-serif; }
         .factura-box { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; }
@@ -16,7 +16,10 @@
 </head>
 <body>
     <div class="factura-box">
-        <div class="titulo">Factura de tu compra en MotoGM</div>
+        <div style="text-align:center; margin-bottom:20px;">
+            <img src="/Users/aprendiz/Desktop/MOTOGM/core/static/core/logonegro.png" alt="Logo raber biker" style="max-width:180px; height:auto; background:#fff; border-radius:8px; border:1px solid #eee;">
+        </div>
+        <div class="titulo">Factura de tu compra en raber biker</div>
         <div class="info">
             <p><strong>Nombre:</strong> {{ nombre }}</p>
             <p><strong>Email:</strong> {{ email }}</p>
@@ -41,14 +44,15 @@
                 <tr>
                     <td>{{ item.producto.nombre }}</td>
                     <td>{{ item.cantidad }}</td>
-                    <td>${{ item.precio_unitario|floatformat:2 }}</td>
-                    <td>${{ item.cantidad|add:item.precio_unitario|floatformat:2 }}</td>
+                    <td>${{ item.precio_unitario }} COP</td>
+                    <td>${{ item.cantidad|add:item.precio_unitario }} COP</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <div class="total">Total pagado: ${{ total_pedido|floatformat:2 }}</div>
-        <p>¡Gracias por tu compra en MotoGM!</p>
+        <div class="total">IVA (19%): ${{ iva|floatformat:2 }}</div>
+        <div class="total">Total pagado (con IVA): ${{ total_pedido|floatformat:2 }}</div>
+        <p>¡Gracias por tu compra en raber biker!</p>
     </div>
 </body>
 </html>
