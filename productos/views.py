@@ -133,6 +133,9 @@ def add_to_cart(request, pk):
         if cantidad <= 0:
             return JsonResponse({'success': False, 'message': "La cantidad debe ser al menos 1."}, status=400)
 
+        if cantidad > producto.stock:
+            return JsonResponse({'success': False, 'message': 'No hay suficiente stock disponible para este producto.'}, status=400)
+
         identifier = _get_or_create_cart_identifier(request)
         print(f"\n--- DEBUG add_to_cart ---")
         print(f"Identifier: {identifier}")
@@ -288,6 +291,25 @@ def checkout(request):
     return render(request, 'productos/checkout.html', context)
 
 
+def checkout_anonimo(request):
+    identifier = _get_or_create_cart_identifier(request)
+    carrito_items = CarritoItem.objects.filter(session_key=identifier['session_key']).select_related('producto')
+    if not carrito_items.exists():
+        messages.warning(request, "Tu carrito está vacío. Añade productos para continuar.")
+        return redirect('productos:lista_productos')
+    subtotal = sum(item.get_total_item_price() for item in carrito_items)
+    iva = (subtotal * Decimal('0.19')).quantize(Decimal('0.01'))
+    total_carrito = (subtotal + iva).quantize(Decimal('0.01'))
+    context = {
+        'carrito_items': carrito_items,
+        'subtotal': subtotal,
+        'iva': iva,
+        'total_carrito': total_carrito,
+        'ciudades': COLOMBIAN_CITIES,
+    }
+    return render(request, 'productos/checkout_anonimo.html', context)
+
+
 @login_required
 def process_checkout(request):
     if request.method == 'POST':
@@ -353,6 +375,8 @@ def process_checkout(request):
                 import os
 
                 pedido_items = PedidoItem.objects.filter(pedido=nuevo_pedido)
+                iva = (total_pedido * Decimal('0.19')).quantize(Decimal('0.01'))
+                total_con_iva = (total_pedido + iva).quantize(Decimal('0.01'))
                 context_email = {
                     'nombre': nombre_completo,
                     'email': request.user.email,
@@ -364,6 +388,8 @@ def process_checkout(request):
                     'metodo_pago': metodo_pago,
                     'pedido_items': pedido_items,
                     'total_pedido': total_pedido,
+                    'iva': iva,
+                    'total_con_iva': total_con_iva,
                 }
                 subject = 'Factura de tu compra en raber biker'
                 html_content = render_to_string('productos/email_factura.html', context_email)
@@ -397,6 +423,103 @@ def process_checkout(request):
     messages.error(request, "Método de solicitud no permitido.")
     return redirect('productos:checkout')
 
+
+def process_checkout_anonimo(request):
+    if request.method == 'POST':
+        identifier = _get_or_create_cart_identifier(request)
+        carrito_items = CarritoItem.objects.filter(session_key=identifier['session_key']).select_related('producto')
+        if not carrito_items.exists():
+            messages.error(request, "Tu carrito está vacío.")
+            return redirect('productos:lista_productos')
+        nombre_completo = request.POST.get('nombre_completo')
+        direccion = request.POST.get('direccion')
+        ciudad = request.POST.get('ciudad')
+        email = request.POST.get('email')
+        metodo_pago = request.POST.get('metodo_pago')
+        if not all([nombre_completo, direccion, ciudad, email, metodo_pago]):
+            messages.error(request, "Por favor, completa todos los campos del formulario.")
+            return redirect('productos:checkout_anonimo')
+        total_pedido = sum(item.get_total_item_price() for item in carrito_items)
+        from productos.models import Pedido, PedidoItem
+        from inventario.models import MovimientoInventario
+        from django.core.mail import EmailMultiAlternatives
+        from django.template.loader import render_to_string
+        from django.conf import settings
+        from email.mime.image import MIMEImage
+        import os
+        from decimal import Decimal
+        from django.db import transaction
+        try:
+            with transaction.atomic():
+                pedido = Pedido.objects.create(
+                    usuario=None,
+                    nombre=nombre_completo,
+                    direccion=direccion,
+                    ciudad=ciudad,
+                    total_pedido=total_pedido,
+                    estado='Pendiente'
+                )
+                for item in carrito_items:
+                    PedidoItem.objects.create(
+                        pedido=pedido,
+                        producto=item.producto,
+                        cantidad=item.cantidad,
+                        precio_unitario=item.producto.precio
+                    )
+                    item.producto.stock -= item.cantidad
+                    item.producto.save()
+                    MovimientoInventario.objects.create(
+                        producto=item.producto,
+                        tipo_movimiento='Salida',
+                        motivo='Venta',
+                        cantidad=item.cantidad,
+                        descripcion=f"Venta en línea - Pedido #{pedido.pk} para {nombre_completo}",
+                        usuario=None
+                    )
+                carrito_items.delete()
+                # Enviar correo de factura al usuario anónimo
+                pedido_items = PedidoItem.objects.filter(pedido=pedido)
+                iva = (total_pedido * Decimal('0.19')).quantize(Decimal('0.01'))
+                total_con_iva = (total_pedido + iva).quantize(Decimal('0.01'))
+                context_email = {
+                    'nombre': nombre_completo,
+                    'email': email,
+                    'telefono': '',
+                    'tipo_documento': '',
+                    'numero_documento': '',
+                    'direccion': direccion,
+                    'ciudad': ciudad,
+                    'metodo_pago': metodo_pago,
+                    'pedido_items': pedido_items,
+                    'total_pedido': total_pedido,
+                    'iva': iva,
+                    'total_con_iva': total_con_iva,
+                }
+                subject = 'Factura de tu compra en raber biker'
+                html_content = render_to_string('productos/email_factura.html', context_email)
+                email_obj = EmailMultiAlternatives(
+                    subject,
+                    'Adjunto la factura de tu compra en raber biker.',
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email]
+                )
+                email_obj.attach_alternative(html_content, "text/html")
+                # Adjuntar imagen embebida
+                logo_path = os.path.join(settings.BASE_DIR, 'core', 'static', 'core', 'logonegro.png')
+                if os.path.exists(logo_path):
+                    with open(logo_path, 'rb') as f:
+                        logo = MIMEImage(f.read())
+                        logo.add_header('Content-ID', '<logo>')
+                        logo.add_header('Content-Disposition', 'inline', filename='logonegro.png')
+                        email_obj.attach(logo)
+                email_obj.send(fail_silently=False)
+                messages.success(request, "¡Tu pedido ha sido realizado con éxito! La factura ha sido enviada a tu correo.")
+                return redirect('productos:lista_productos')
+        except Exception as e:
+            messages.error(request, f"Ocurrió un error al procesar tu pedido: {e}")
+            return redirect('productos:checkout_anonimo')
+    else:
+        return redirect('productos:checkout_anonimo')
 
 
 @login_required

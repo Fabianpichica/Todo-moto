@@ -77,7 +77,11 @@
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
             <a href="{% url 'landing_page' %}" class="btn btn-secondary me-md-2">Seguir Comprando</a>
-            <a href="{% url 'productos:checkout' %}" class="btn btn-danger btn-lg">Proceder al Pago</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'productos:checkout' %}" class="btn btn-danger btn-lg">Proceder al Pago</a>
+            {% else %}
+                <a href="{% url 'productos:checkout_anonimo' %}" class="btn btn-danger btn-lg">Proceder al Pago</a>
+            {% endif %}
         </div>
     {% else %}
         <div class="alert alert-info text-center" role="alert">

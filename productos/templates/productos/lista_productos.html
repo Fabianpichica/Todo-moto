@@ -63,7 +63,13 @@
                                     <form class="add-to-cart-form" data-product-id="{{ producto.pk }}" action="{% url 'productos:add_to_cart' producto.pk %}" method="post">
                                         {% csrf_token %}
                                         <input type="hidden" name="cantidad" value="1">
-                                        <button type="submit" class="btn btn-outline-warning mt-2">Añadir al Carrito</button>
+                                        <button type="submit" class="btn btn-outline-warning mt-2" {% if producto.stock == 0 %}disabled style="background:#ccc;cursor:not-allowed;"{% endif %}>
+                                            {% if producto.stock == 0 %}
+                                                Sin stock
+                                            {% else %}
+                                                Añadir al Carrito
+                                            {% endif %}
+                                        </button>
                                     </form>
                                     <a href="{% url 'productos:detalle_producto' producto.pk %}" class="btn btn-outline-warning">Ver Producto</a>
                                 </div>
